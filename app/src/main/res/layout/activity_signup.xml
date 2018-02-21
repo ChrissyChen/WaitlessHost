@@ -11,18 +11,30 @@
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         android:background="@color/defaultBackground"
+        android:focusableInTouchMode="true"
         android:gravity="center"
         android:orientation="vertical"
         android:padding="@dimen/activity_horizontal_margin">
 
 
         <ImageView
+            android:id="@+id/imageView"
             android:layout_width="@dimen/logo_w_h"
             android:layout_height="@dimen/logo_w_h"
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="-20dp"
-            android:layout_marginBottom="0dp"
+            android:layout_marginBottom="10dp"
             app:srcCompat="@drawable/logo" />
+
+        <TextView
+            android:id="@+id/description"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="Make Dining Efficient"
+            android:textColor="@color/midGrey"
+            android:textSize="20sp"
+            android:textStyle="bold" />
 
         <android.support.design.widget.TextInputLayout
             android:layout_width="match_parent"
@@ -32,11 +44,12 @@
                 android:id="@+id/email"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="6dp"
-                android:hint="@string/hint_email"
+                android:backgroundTint="@color/hintGrey"
+                android:hint="@string/email"
                 android:inputType="textEmailAddress"
-                android:textColor="@color/darkGrey"
-                android:textColorHint="@color/darkGrey" />
+                android:maxLines="1"
+                android:textColor="@color/darkGrey" />
+
         </android.support.design.widget.TextInputLayout>
 
         <android.support.design.widget.TextInputLayout
@@ -45,48 +58,41 @@
 
             <EditText
                 android:id="@+id/password"
-                android:layout_width="fill_parent"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="8dp"
+                android:backgroundTint="@color/hintGrey"
                 android:hint="@string/hint_password"
+                android:imeActionId="@+id/login"
+                android:imeOptions="actionUnspecified"
                 android:inputType="textPassword"
-                android:textColor="@color/darkGrey"
-                android:textColorHint="@color/darkGrey" />
+                android:maxLines="1"
+                android:textColor="@color/darkGrey" />
+
         </android.support.design.widget.TextInputLayout>
 
-        <!-- Login Button -->
+        <Button
+            android:id="@+id/sign_up_button"
+            style="?android:textAppearanceSmall"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:background="@color/colorPrimary"
+            android:text="@string/action_sign_up_short"
+            android:textColor="@color/lightGrey"
+            android:textStyle="bold" />
+
+        <!-- Link to Login Screen -->
 
         <Button
-            android:id="@+id/btn_login"
+            android:id="@+id/sign_in_button"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="12dp"
-            android:background="@color/colorAccent"
-            android:text="@string/btn_login"
-            android:textColor="@color/lightGrey" />
-
-        <Button
-            android:id="@+id/btn_reset_password"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="12dp"
+            android:layout_marginTop="15dp"
             android:background="@null"
-            android:text="@string/btn_forgot_password"
+            android:text="@string/btn_link_to_login"
             android:textAllCaps="false"
-            android:textColor="@color/colorAccent" />
-
-        <!-- Link to Signup Screen -->
-
-        <Button
-            android:id="@+id/btn_signup"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="-10dp"
-            android:background="@null"
-            android:text="@string/btn_link_to_register"
-            android:textAllCaps="false"
-            android:textColor="@color/midGrey"
-            android:textSize="15dp" />
+            android:textColor="@color/colorAccent"
+            android:textSize="15sp" />
     </LinearLayout>
 
     <ProgressBar
