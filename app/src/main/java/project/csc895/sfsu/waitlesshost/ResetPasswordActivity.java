@@ -28,6 +28,7 @@ public class ResetPasswordActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_reset_password);
 
+        overridePendingTransition(R.anim.trans_left_in, R.anim.trans_left_out);
         Log.d(TAG, "reset page");
 
         inputEmail = (EditText) findViewById(R.id.email);
@@ -47,11 +48,10 @@ public class ResetPasswordActivity extends AppCompatActivity {
         btnReset.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 String email = inputEmail.getText().toString().trim();
-
                 if (TextUtils.isEmpty(email)) {
-                    Toast.makeText(getApplication(), "Enter your registered email id", Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(getApplication(), "Enter your registered email", Toast.LENGTH_SHORT).show();
+                    inputEmail.setError(getString(R.string.enter_registered_email));
                     return;
                 }
 
@@ -61,11 +61,10 @@ public class ResetPasswordActivity extends AppCompatActivity {
                             @Override
                             public void onComplete(@NonNull Task<Void> task) {
                                 if (task.isSuccessful()) {
-                                    Toast.makeText(ResetPasswordActivity.this, "We have sent you instructions to reset your password!", Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(ResetPasswordActivity.this, getString(R.string.send_reset_instruction), Toast.LENGTH_LONG).show();
                                 } else {
-                                    Toast.makeText(ResetPasswordActivity.this, "Failed to send reset email!", Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(ResetPasswordActivity.this, getString(R.string.fail_reset) + task.getException().getMessage(), Toast.LENGTH_LONG).show();
                                 }
-
                                 progressBar.setVisibility(View.GONE);
                             }
                         });
