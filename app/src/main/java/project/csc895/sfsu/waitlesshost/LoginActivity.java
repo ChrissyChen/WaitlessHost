@@ -349,6 +349,7 @@ package project.csc895.sfsu.waitlesshost;
 //}
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
@@ -374,11 +375,13 @@ public class LoginActivity extends AppCompatActivity {
     private FirebaseAuth auth;
     private ProgressBar progressBar;
     private Button btnSignup, btnLogin, btnReset;
+    private SharedPreferences pref;
+    private SharedPreferences.Editor editor;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        overridePendingTransition(R.anim.trans_left_in, R.anim.trans_left_out);
+        //overridePendingTransition(R.anim.trans_left_in, R.anim.trans_left_out);
 
         Log.d(TAG, "login page");
 
@@ -396,6 +399,11 @@ public class LoginActivity extends AppCompatActivity {
         // set the view now
         setContentView(R.layout.activity_login);
 
+
+        //SharedPreference to Store API Result
+        pref = getApplicationContext().getSharedPreferences("CachedResponse", 0);
+        editor = pref.edit();
+        editor.apply();
 
         //Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         //setSupportActionBar(toolbar);
@@ -427,7 +435,7 @@ public class LoginActivity extends AppCompatActivity {
         btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String email = inputEmail.getText().toString();
+                final String email = inputEmail.getText().toString();
                 final String password = inputPassword.getText().toString();
 
                 if (TextUtils.isEmpty(email)) {
@@ -461,7 +469,7 @@ public class LoginActivity extends AppCompatActivity {
                                         Toast.makeText(LoginActivity.this, getString(R.string.auth_failed), Toast.LENGTH_LONG).show();
                                     }
                                 } else {
-                                    checkIfEmailVerified();
+                                    checkIfEmailVerified(email);
                                 }
                             }
                         });
@@ -469,7 +477,7 @@ public class LoginActivity extends AppCompatActivity {
         });
     }
 
-    private void checkIfEmailVerified()
+    private void checkIfEmailVerified(String email)
     {
         FirebaseUser user = auth.getCurrentUser();
 
@@ -478,7 +486,11 @@ public class LoginActivity extends AppCompatActivity {
             {
                 // user is verified, so you can finish this activity or send user to activity which you want.
                 Toast.makeText(LoginActivity.this, getString(R.string.login_succeed), Toast.LENGTH_SHORT).show();
-                startActivity(new Intent(LoginActivity.this, MainActivity.class));
+                editor.putString("loginEmail", email);
+                editor.apply();
+                Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                intent.putExtra("Email", email);
+                startActivity(intent);
                 finish();
             }
             else
