@@ -4,8 +4,14 @@ package project.csc895.sfsu.waitlesshost;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.support.design.widget.NavigationView;
+import android.support.v4.view.GravityCompat;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -15,10 +21,6 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
-import java.util.ArrayList;
-
-import project.csc895.sfsu.waitlesshost.model.Restaurant;
-
 public class MainActivity extends AppCompatActivity {
 
     private static final String TAG = "Main Activity";
@@ -26,18 +28,22 @@ public class MainActivity extends AppCompatActivity {
     private FirebaseUser mFirebaseUser;
     private DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
     private Button btnSignOut;
+    private DrawerLayout mDrawerLayout;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        // set Navigation Drawer icon
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        ActionBar actionbar = getSupportActionBar();
+        actionbar.setDisplayHomeAsUpEnabled(true);
+        actionbar.setHomeAsUpIndicator(R.drawable.ic_menu);
+
         mFirebaseAuth = FirebaseAuth.getInstance();
         mFirebaseUser = mFirebaseAuth.getCurrentUser();
 
-        //Now check if this user is null
-        if (mFirebaseUser == null){
-            //send user to the login page
-        }
 
         Log.d(TAG, "Main activity");
 
@@ -52,8 +58,6 @@ public class MainActivity extends AppCompatActivity {
         Intent intent = getIntent();
         String email = intent.getStringExtra("Email");
 
-        TextView testUser = (TextView) findViewById(R.id.test_user);
-        TextView testEmail = (TextView) findViewById(R.id.test_email);
         btnSignOut = (Button) findViewById(R.id.btn_sign_out);
 
         btnSignOut.setOnClickListener(new View.OnClickListener() {
@@ -63,13 +67,34 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        testUser.setText(email);
-        testEmail.setText(mFirebaseUser.getEmail());
 
-        Log.d(TAG + "get user", mFirebaseUser.toString());
-        //Log.d("get user display name", mFirebaseUser.getDisplayName());
-        Log.d("get user email", mFirebaseUser.getEmail());
-        //Log.d("get user tel", mFirebaseUser.getPhoneNumber());
+
+
+
+        // Navigation Drawer
+        mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+
+        View navHeader = navigationView.getHeaderView(0);
+        TextView drawerEmail = (TextView) navHeader.findViewById(R.id.drawer_email);
+        drawerEmail.setText(email);
+
+        navigationView.setNavigationItemSelectedListener(
+                new NavigationView.OnNavigationItemSelectedListener() {
+                    @Override
+                    public boolean onNavigationItemSelected(MenuItem menuItem) {
+                        // set item as selected to persist highlight
+                        menuItem.setChecked(true);
+                        // close drawer when item is tapped
+                        mDrawerLayout.closeDrawers();
+
+                        // Add code here to update the UI based on the item selected
+                        // For example, swap UI fragments here
+
+                        return true;
+                    }
+                });
+
 
     }
 
@@ -78,11 +103,20 @@ public class MainActivity extends AppCompatActivity {
         SharedPreferences.Editor editor = pref.edit();
         editor.clear();
         editor.apply();
-
         Intent intent = new Intent(MainActivity.this, LoginActivity.class);
         startActivity(intent);
         mFirebaseAuth.signOut();    // check??
         finish();
 
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                mDrawerLayout.openDrawer(GravityCompat.START);
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 }

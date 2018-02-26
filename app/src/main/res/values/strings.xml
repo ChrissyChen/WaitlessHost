@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">WaitlessHost</string>
+    <string name="app_name">Waitless Host</string>
 
     <!--for textinputlayout-->
     <item name="visible" type="id"/>
@@ -18,7 +18,7 @@
         completions."
     </string>
 
-    <string name="btn_sign_out">Sign Out</string>
+
 
 
     <!-- Sign Up Page -->
@@ -48,5 +48,16 @@
     <string name="enter_registered_email">Enter your registered email!</string>
     <string name="send_reset_instruction">We have sent you instructions to reset your password!</string>
     <string name="fail_reset">Failed to send reset email!</string>
+
+
+    <!-- Main Page -->
+    <string name="general_setting">General Settings</string>
+    <string name="tables">Tables</string>
+    <string name="open_hours">Open Hours</string>
+    <string name="menu">Menu</string>
+    <string name="guests">Guests</string>
+    <string name="sign_out">Sign Out</string>
+
+
 
 </resources>
