@@ -1,4 +1,4 @@
-package project.csc895.sfsu.waitlesshost;
+package project.csc895.sfsu.waitlesshost.ui;
 
 import android.content.Intent;
 import android.content.SharedPreferences;

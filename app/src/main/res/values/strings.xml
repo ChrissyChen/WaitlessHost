@@ -51,12 +51,22 @@
 
 
     <!-- Main Page -->
+    <string name="home">Home</string>
     <string name="general_setting">General Settings</string>
     <string name="tables">Tables</string>
     <string name="open_hours">Open Hours</string>
     <string name="menu">Menu</string>
     <string name="guests">Guests</string>
     <string name="sign_out">Sign Out</string>
+
+    <!-- General Fragment -->
+    <string name="restaurant_name">Restaurant Name</string>
+    <string name="address">Address</string>
+    <string name="phone">Phone</string>
+    <string name="cuisine">Cuisine</string>
+    <string name="logo">Logo</string>
+    <string name="btn_save">Save</string>
+
 
 
 

@@ -1,11 +1,10 @@
-package project.csc895.sfsu.waitlesshost;
+package project.csc895.sfsu.waitlesshost.ui;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
@@ -19,6 +18,8 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+
+import project.csc895.sfsu.waitlesshost.R;
 
 public class LoginActivity extends AppCompatActivity {
 

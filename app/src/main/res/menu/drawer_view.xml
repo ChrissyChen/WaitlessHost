@@ -2,8 +2,12 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <group android:checkableBehavior="single">
         <item
-            android:id="@+id/nav_general_settings"
+            android:id="@+id/nav_home"
             android:icon="@drawable/ic_store_mall_directory_black_24px"
+            android:title="@string/home" />
+        <item
+            android:id="@+id/nav_general_settings"
+            android:icon="@drawable/ic_settings_black_24px"
             android:title="@string/general_setting" />
         <item
             android:id="@+id/nav_table"

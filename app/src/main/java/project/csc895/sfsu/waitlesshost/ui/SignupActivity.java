@@ -1,4 +1,4 @@
-package project.csc895.sfsu.waitlesshost;
+package project.csc895.sfsu.waitlesshost.ui;
 
 
 import android.content.Intent;
@@ -18,6 +18,8 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+
+import project.csc895.sfsu.waitlesshost.R;
 
 public class SignupActivity extends AppCompatActivity {
 

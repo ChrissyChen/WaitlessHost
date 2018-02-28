@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
-    tools:context="project.csc895.sfsu.waitlesshost.LoginActivity">
+    tools:context="project.csc895.sfsu.waitlesshost.ui.LoginActivity">
 
     <LinearLayout
         android:layout_width="fill_parent"
@@ -62,7 +62,6 @@
                 android:layout_height="wrap_content"
                 android:backgroundTint="@color/hintGrey"
                 android:hint="@string/hint_password"
-                android:imeActionId="@+id/login"
                 android:imeOptions="actionUnspecified"
                 android:inputType="textPassword"
                 android:maxLines="1"

@@ -1,4 +1,4 @@
-package project.csc895.sfsu.waitlesshost;
+package project.csc895.sfsu.waitlesshost.ui;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -14,6 +14,8 @@ import android.widget.Toast;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
+
+import project.csc895.sfsu.waitlesshost.R;
 
 public class ResetPasswordActivity extends AppCompatActivity {
 
