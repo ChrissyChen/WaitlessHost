@@ -17,24 +17,53 @@
         android:padding="@dimen/activity_horizontal_margin">
 
 
-        <ImageView
-            android:id="@+id/imageView"
-            android:layout_width="@dimen/logo_w_h"
-            android:layout_height="@dimen/logo_w_h"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginTop="-20dp"
-            android:layout_marginBottom="10dp"
-            app:srcCompat="@drawable/logo" />
-
-        <TextView
-            android:id="@+id/description"
+        <android.support.design.widget.TextInputLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:text="@string/slogan"
-            android:textColor="@color/midGrey"
-            android:textSize="20sp"
-            android:textStyle="bold" />
+            android:layout_height="wrap_content">
+
+            <EditText
+                android:id="@+id/name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:backgroundTint="@color/hintGrey"
+                android:hint="@string/restaurant_name"
+                android:inputType="text"
+                android:maxLines="1"
+                android:textColor="@color/darkGrey" />
+
+        </android.support.design.widget.TextInputLayout>
+
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <EditText
+                android:id="@+id/address"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:backgroundTint="@color/hintGrey"
+                android:hint="@string/address"
+                android:inputType="textCapWords"
+                android:maxLines="1"
+                android:textColor="@color/darkGrey" />
+
+        </android.support.design.widget.TextInputLayout>
+
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <EditText
+                android:id="@+id/phone"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:backgroundTint="@color/hintGrey"
+                android:hint="@string/phone"
+                android:inputType="phone"
+                android:maxLines="1"
+                android:textColor="@color/darkGrey" />
+
+        </android.support.design.widget.TextInputLayout>
 
         <android.support.design.widget.TextInputLayout
             android:layout_width="match_parent"

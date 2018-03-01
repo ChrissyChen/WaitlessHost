@@ -52,7 +52,7 @@ public class ResetPasswordActivity extends AppCompatActivity {
             public void onClick(View v) {
                 String email = inputEmail.getText().toString().trim();
                 if (TextUtils.isEmpty(email)) {
-                    //Toast.makeText(getApplication(), "Enter your registered email", Toast.LENGTH_SHORT).show();
+                    inputEmail.requestFocus();
                     inputEmail.setError(getString(R.string.enter_registered_email));
                     return;
                 }

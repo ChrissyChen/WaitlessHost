@@ -26,6 +26,9 @@
     <string name="sign_up">Sign up</string>
     <string name="btn_link_to_login">Already registered. Login me!</string>
     <string name="send_verified_email">Signup successfully. Verification email sent to activate your account!</string>
+    <string name="empty_name">Name is empty. Enter restaurant name!</string>
+    <string name="empty_address">Address is empty. Enter restaurant address!</string>
+    <string name="empty_phone">Phone is empty. Enter phone number!</string>
 
     <!-- Login Page -->
     <string name="hint_email">Email</string>
