@@ -27,8 +27,9 @@ public class Restaurant implements Serializable {
     public Restaurant() {
     }
 
-    public Restaurant(String name, String address, String telephone, String managerID, String email, String password) {
+    public Restaurant(String name, String cuisine, String address, String telephone, String managerID, String email, String password) {
         this.name = name;
+        this.cuisine = cuisine;
         this.address = address;
         this.telephone = telephone;
         this.managerID = managerID;

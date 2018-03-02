@@ -38,7 +38,7 @@ public class GeneralFragment extends Fragment {
         mFirebaseAuth = FirebaseAuth.getInstance();
         mFirebaseUser = mFirebaseAuth.getCurrentUser();
 
-        EditText inputRestaurantName = (EditText) view.findViewById(R.id.restaurant_name);
+        EditText inputRestaurantName = (EditText) view.findViewById(R.id.name);
         EditText inputAddress = (EditText) view.findViewById(R.id.address);
         EditText inputPhone = (EditText) view.findViewById(R.id.phone);
         EditText inputCuisine = (EditText) view.findViewById(R.id.cuisine);

@@ -18,8 +18,12 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
 
 import project.csc895.sfsu.waitlesshost.R;
 import project.csc895.sfsu.waitlesshost.model.Restaurant;
@@ -27,7 +31,8 @@ import project.csc895.sfsu.waitlesshost.model.Restaurant;
 public class SignupActivity extends AppCompatActivity {
 
     private static final String TAG = "Signup Activity";
-    private EditText inputEmail, inputPassword, inputRestaurantName, inputAddress, inputPhone;
+    private static final String RESTAURANT_CHILD = "restaurants";
+    private EditText inputEmail, inputPassword, inputRestaurantName, inputCuisine, inputAddress, inputPhone;
     private Button btnSignIn, btnSignUp, btnResetPassword;
     private ProgressBar progressBar;
     private FirebaseAuth mFirebaseAuth;
@@ -46,9 +51,10 @@ public class SignupActivity extends AppCompatActivity {
 
         btnSignIn = (Button) findViewById(R.id.sign_in_button);
         btnSignUp = (Button) findViewById(R.id.sign_up_button);
-        inputRestaurantName = (EditText) findViewById(R.id.name);
-        inputAddress = (EditText) findViewById(R.id.address);
-        inputPhone = (EditText) findViewById(R.id.phone);
+        inputRestaurantName = (EditText) findViewById(R.id.restaurant_name);
+        inputCuisine = (EditText) findViewById(R.id.restaurant_cuisine);
+        inputAddress = (EditText) findViewById(R.id.restaurant_address);
+        inputPhone = (EditText) findViewById(R.id.restaurant_phone);
         inputEmail = (EditText) findViewById(R.id.email);
         inputPassword = (EditText) findViewById(R.id.password);
         progressBar = (ProgressBar) findViewById(R.id.progressBar);
@@ -65,6 +71,7 @@ public class SignupActivity extends AppCompatActivity {
             public void onClick(View v) {
 
                 final String name = inputRestaurantName.getText().toString().trim();
+                final String cuisine = inputCuisine.getText().toString().trim();
                 final String address = inputAddress.getText().toString().trim();
                 final String phone = inputPhone.getText().toString().trim();
                 final String email = inputEmail.getText().toString().trim();
@@ -122,7 +129,7 @@ public class SignupActivity extends AppCompatActivity {
                                             Toast.LENGTH_LONG).show();
                                 } else {
                                     mFirebaseUser = mFirebaseAuth.getCurrentUser();
-                                    createNewRestaurantRecord(name, address, phone, email, password);
+                                    createNewRestaurantRecord(name, cuisine, address, phone, email, password);
                                     // NOTE: If the new account was created, the user is also signed in
                                     sendVerificationEmail();
                                 }
@@ -139,11 +146,29 @@ public class SignupActivity extends AppCompatActivity {
         progressBar.setVisibility(View.GONE);
     }
 
-    private void createNewRestaurantRecord(String name, String address, String phone, String email, String password) {
+    private void createNewRestaurantRecord(String name, String cuisine, String address, String phone, String email, String password) {
         if (mFirebaseUser != null) {
             String managerID = mFirebaseUser.getUid();
-            Restaurant restaurant = new Restaurant(name, address, phone, managerID, email, password);
-            mDatabase.child("restaurants").push().setValue(restaurant);
+
+            /* Push a new restaurant obj. but hard to get randomly generated id */
+            //Restaurant restaurant = new Restaurant(name, address, phone, managerID, email, password);
+            //mDatabase.child(RESTAURANT_CHILD).push().setValue(restaurant);
+
+            DatabaseReference ref = FirebaseDatabase.getInstance().getReference(RESTAURANT_CHILD);
+            String key = ref.push().getKey();
+            Log.d("key:  ", key); // generated random id
+
+            /* set each field individually */
+//            ref.child(key).child("name").setValue(name);
+//            ref.child(key).child("address").setValue(address);
+//            ref.child(key).child("telephone").setValue(phone);
+//            ref.child(key).child("managerID").setValue(managerID);
+            Restaurant restaurant = new Restaurant(name, cuisine, address, phone, managerID, email, password);
+            ref.child(key).setValue(restaurant);
+
+
+            //getRestaurantRecordValue(key);
+            //getRestaurantRecordKey(managerID);  // another way to get randomly generated key
         }
 
         // TODO do in background?
@@ -151,8 +176,60 @@ public class SignupActivity extends AppCompatActivity {
     }
 
 
-    private void sendVerificationEmail()
-    {
+    private void getRestaurantRecordValue(String key) {
+        DatabaseReference ref = mDatabase.child(RESTAURANT_CHILD).child(key);
+
+        ref.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                Restaurant restaurant = dataSnapshot.getValue(Restaurant.class);
+                if (restaurant != null) {
+                    String name = restaurant.getName();
+                    String address = restaurant.getAddress();
+                    String managerID = restaurant.getManagerID();
+                    Log.d("name: ", name);
+                    Log.d("address: ", address);
+                    Log.d("managerID: ", managerID);
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+    }
+
+    private void getRestaurantRecordKey(String managerID) {
+        Query query = mDatabase.child(RESTAURANT_CHILD)
+                .orderByChild("managerID")
+                .equalTo(managerID);
+
+        query.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                // show no result view
+                if (!dataSnapshot.hasChildren()) {
+                    Log.d(TAG, "NO RESULT VIEW SHOWS");
+                } else {
+                    for (DataSnapshot objSnapshot: dataSnapshot.getChildren()) {
+                        String key = objSnapshot.getKey();
+                        Log.d("get method key3:", key);
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
+
+    }
+
+
+    private void sendVerificationEmail() {
         if (mFirebaseUser != null) {
             mFirebaseUser.sendEmailVerification()
                     .addOnCompleteListener(new OnCompleteListener<Void>() {
@@ -164,9 +241,7 @@ public class SignupActivity extends AppCompatActivity {
                                 mFirebaseAuth.signOut();
                                 startActivity(new Intent(SignupActivity.this, LoginActivity.class));
                                 //finish();
-                            }
-                            else
-                            {
+                            } else {
                                 // email not sent, so display message and restart the activity or do whatever you wish to do
 
                                 //restart this activity
