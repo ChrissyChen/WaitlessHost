@@ -183,7 +183,7 @@ public class MainActivity extends AppCompatActivity {
                 .orderByChild(MANAGER_ID_CHILD)
                 .equalTo(managerID);
 
-        query.addListenerForSingleValueEvent(new ValueEventListener() {
+        query.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 // show no result view
