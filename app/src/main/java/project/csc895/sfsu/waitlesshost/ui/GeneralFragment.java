@@ -13,6 +13,7 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -32,7 +33,10 @@ public class GeneralFragment extends Fragment {
 
     private static final String TAG = "General Info Fragment";
     private static final String RESTAURANT_CHILD = "restaurants";
-    private static final String MANAGER_ID_CHILD = "managerID";
+    private static final String NAME_CHILD = "name";
+    private static final String ADDRESS_CHILD = "address";
+    private static final String PHONE_CHILD = "telephone";
+    private static final String CUISINE_CHILD = "cuisine";
     private static final String ARGS_RESTAURANT_ID = "restaurantID";
     private FirebaseAuth mFirebaseAuth;
     private FirebaseUser mFirebaseUser;
@@ -50,25 +54,31 @@ public class GeneralFragment extends Fragment {
         Bundle args = getArguments();
         restaurantID = args.getString(ARGS_RESTAURANT_ID);
 
-//        mFirebaseAuth = FirebaseAuth.getInstance();
-//        mFirebaseUser = mFirebaseAuth.getCurrentUser();
-        loadRestaurantRecordValueWithID(restaurantID);
-
         inputName = (EditText) view.findViewById(R.id.name);
         inputAddress = (EditText) view.findViewById(R.id.address);
         inputPhone = (EditText) view.findViewById(R.id.phone);
         inputCuisine = (EditText) view.findViewById(R.id.cuisine);
         ImageView imageUpload = (ImageView) view.findViewById(R.id.imageUpload);
+
         Button btnSave = (Button) view.findViewById(R.id.save_button);
         btnSave.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                DatabaseReference ref = mDatabase.child(RESTAURANT_CHILD).child(restaurantID);
+                String name = inputName.getText().toString().trim();
+                String address = inputAddress.getText().toString().trim();
+                String phone = inputPhone.getText().toString().trim();
+                String cuisine = inputCuisine.getText().toString().trim();
+                ref.child(NAME_CHILD).setValue(name);
+                ref.child(ADDRESS_CHILD).setValue(address);
+                ref.child(PHONE_CHILD).setValue(phone);
+                ref.child(CUISINE_CHILD).setValue(cuisine);
+                // TODO update image
+                Toast.makeText(getActivity(), "General Information Saved! ", Toast.LENGTH_SHORT).show();
             }
         });
 
-
-
+        loadRestaurantRecordValueWithID(restaurantID);
 
         return view;
     }
@@ -86,7 +96,7 @@ public class GeneralFragment extends Fragment {
                     String address = restaurant.getAddress();
                     String phone = restaurant.getTelephone();
                     String cuisine = restaurant.getCuisine();
-                    // get image
+                    // TODO get image
                     Log.d("name: ", name);
                     Log.d("address: ", address);
                     Log.d("phone: ", phone);
