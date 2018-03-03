@@ -32,6 +32,7 @@ public class SignupActivity extends AppCompatActivity {
 
     private static final String TAG = "Signup Activity";
     private static final String RESTAURANT_CHILD = "restaurants";
+    private static final String MANAGER_ID_CHILD = "managerID";
     private EditText inputEmail, inputPassword, inputRestaurantName, inputCuisine, inputAddress, inputPhone;
     private Button btnSignIn, btnSignUp, btnResetPassword;
     private ProgressBar progressBar;
@@ -167,7 +168,7 @@ public class SignupActivity extends AppCompatActivity {
             ref.child(key).setValue(restaurant);
 
 
-            //getRestaurantRecordValue(key);
+            //getRestaurantRecordValueWithID(key);
             //getRestaurantRecordKey(managerID);  // another way to get randomly generated key
         }
 
@@ -176,7 +177,7 @@ public class SignupActivity extends AppCompatActivity {
     }
 
 
-    private void getRestaurantRecordValue(String key) {
+    private void getRestaurantRecordValueWithID(String key) {
         DatabaseReference ref = mDatabase.child(RESTAURANT_CHILD).child(key);
 
         ref.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -202,7 +203,7 @@ public class SignupActivity extends AppCompatActivity {
 
     private void getRestaurantRecordKey(String managerID) {
         Query query = mDatabase.child(RESTAURANT_CHILD)
-                .orderByChild("managerID")
+                .orderByChild(MANAGER_ID_CHILD)
                 .equalTo(managerID);
 
         query.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -224,8 +225,6 @@ public class SignupActivity extends AppCompatActivity {
 
             }
         });
-
-
     }
 
 

@@ -21,18 +21,28 @@ import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
 
 import project.csc895.sfsu.waitlesshost.R;
+import project.csc895.sfsu.waitlesshost.model.Restaurant;
 
 public class MainActivity extends AppCompatActivity {
 
     private static final String TAG = "Main Activity";
+    private static final String RESTAURANT_CHILD = "restaurants";
+    private static final String MANAGER_ID_CHILD = "managerID";
+    private static final String ARGS_RESTAURANT_ID = "restaurantID";
     private FirebaseAuth mFirebaseAuth;
     private FirebaseUser mFirebaseUser;
     private DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
     private DrawerLayout mDrawerLayout;
+    private TextView drawerName;
+    private String restaurantID;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -52,15 +62,6 @@ public class MainActivity extends AppCompatActivity {
         mFirebaseUser = mFirebaseAuth.getCurrentUser();
 
         Log.d(TAG, "Main activity");
-
-//       ArrayList<String> cuisineTags = new ArrayList<>();
-//       cuisineTags.add("Chinese");
-//       cuisineTags.add("Szechuan");
-//       Restaurant restaurant = new Restaurant("Hunan Impression", cuisineTags);
-//       mDatabase.child("restaurants").push().setValue(restaurant);
-//
-//       Log.d(TAG, "test to write Restaurant j");
-
         Intent intent = getIntent();
         String email = intent.getStringExtra("Email");
 
@@ -74,12 +75,15 @@ public class MainActivity extends AppCompatActivity {
 
 
         // Navigation Drawer
-        mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        mDrawerLayout = findViewById(R.id.drawer_layout);
+        NavigationView navigationView = findViewById(R.id.nav_view);
 
         View navHeader = navigationView.getHeaderView(0);
-        TextView drawerEmail = (TextView) navHeader.findViewById(R.id.drawer_email);
+        drawerName = navHeader.findViewById(R.id.drawer_name);
+        TextView drawerEmail = navHeader.findViewById(R.id.drawer_email);
         drawerEmail.setText(email);
+        // Load name in drawer header and get restaurant ID
+        loadRestaurantNameAndID(mFirebaseUser.getUid());
 
         navigationView.setNavigationItemSelectedListener(
                 new NavigationView.OnNavigationItemSelectedListener() {
@@ -132,6 +136,13 @@ public class MainActivity extends AppCompatActivity {
     private void pushFragment(Fragment fragment) {
         if (fragment == null) return;
 
+        // pass data from activity to fragment
+        Bundle args = new Bundle();
+        args.putString(ARGS_RESTAURANT_ID, restaurantID);
+//        args.putInt("Integer", Integer value);
+//        args.putDouble("Double", Double value);
+        fragment.setArguments(args);
+
         FragmentManager fragmentManager = getFragmentManager();
         if (fragmentManager != null) {
             FragmentTransaction transaction = fragmentManager.beginTransaction();
@@ -148,6 +159,7 @@ public class MainActivity extends AppCompatActivity {
         SharedPreferences.Editor editor = pref.edit();
         editor.clear();
         editor.apply();
+
         Intent intent = new Intent(MainActivity.this, LoginActivity.class);
         startActivity(intent);
         mFirebaseAuth.signOut();    // check??
@@ -163,5 +175,38 @@ public class MainActivity extends AppCompatActivity {
                 return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+
+    private void loadRestaurantNameAndID(String managerID) {
+        Query query = mDatabase.child(RESTAURANT_CHILD)
+                .orderByChild(MANAGER_ID_CHILD)
+                .equalTo(managerID);
+
+        query.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                // show no result view
+                if (!dataSnapshot.hasChildren()) {
+                    Log.d(TAG, "NO RESULT FOUND!");
+                } else {
+                    for (DataSnapshot objSnapshot: dataSnapshot.getChildren()) {
+                        restaurantID = objSnapshot.getKey();
+
+                        Restaurant restaurant = objSnapshot.getValue(Restaurant.class);
+                        if (restaurant != null) {
+                            String name = restaurant.getName();
+                            drawerName.setText(name);
+                        }
+
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
     }
 }

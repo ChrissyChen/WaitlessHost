@@ -53,7 +53,7 @@ public class LoginActivity extends AppCompatActivity {
         setContentView(R.layout.activity_login);
 
 
-        //SharedPreference to Store API Result
+        //SharedPreference to Store API Result. don't need to login again when launch the app if pref has loginEmail value
         pref = getApplicationContext().getSharedPreferences("CachedResponse", 0);
         editor = pref.edit();
         editor.apply();
@@ -140,8 +140,11 @@ public class LoginActivity extends AppCompatActivity {
             {
                 // user is verified, so you can finish this activity or send user to activity which you want.
                 Toast.makeText(LoginActivity.this, getString(R.string.login_succeed), Toast.LENGTH_SHORT).show();
+
+                // don't need to login again when launch the app if pref has loginEmail value
                 editor.putString("loginEmail", email);
                 editor.apply();
+
                 Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                 intent.putExtra("Email", email);
                 startActivity(intent);
