@@ -130,7 +130,7 @@ public class SignupActivity extends AppCompatActivity {
                                             Toast.LENGTH_LONG).show();
                                 } else {
                                     mFirebaseUser = mFirebaseAuth.getCurrentUser();
-                                    createNewRestaurantRecord(name, cuisine, address, phone, email, password);
+                                    createNewRestaurantRecord(name, cuisine, address, phone, email);
                                     // NOTE: If the new account was created, the user is also signed in
                                     sendVerificationEmail();
                                 }
@@ -147,7 +147,7 @@ public class SignupActivity extends AppCompatActivity {
         progressBar.setVisibility(View.GONE);
     }
 
-    private void createNewRestaurantRecord(String name, String cuisine, String address, String phone, String email, String password) {
+    private void createNewRestaurantRecord(String name, String cuisine, String address, String phone, String email) {
         if (mFirebaseUser != null) {
             String managerID = mFirebaseUser.getUid();
 
@@ -164,7 +164,7 @@ public class SignupActivity extends AppCompatActivity {
 //            ref.child(key).child("address").setValue(address);
 //            ref.child(key).child("telephone").setValue(phone);
 //            ref.child(key).child("managerID").setValue(managerID);
-            Restaurant restaurant = new Restaurant(name, cuisine, address, phone, managerID, email, password);
+            Restaurant restaurant = new Restaurant(key, name, cuisine, address, phone, managerID, email);
             ref.child(key).setValue(restaurant);
 
 

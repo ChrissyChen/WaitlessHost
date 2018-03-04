@@ -197,6 +197,7 @@ public class MainActivity extends AppCompatActivity {
                         if (restaurant != null) {
                             String name = restaurant.getName();
                             drawerName.setText(name);
+                            // another way to get restaurantID: restaurant.getRestaurantID();
                         }
 
                     }
