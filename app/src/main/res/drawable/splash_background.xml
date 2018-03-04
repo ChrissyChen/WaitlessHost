@@ -4,11 +4,12 @@
     <item android:drawable="@color/defaultBackground" />
 
     <item
-        android:width="150dp"
-        android:height="150dp"
-        android:gravity="center" >
+        android:width="300dp"
+        android:height="400dp"
+        android:gravity="center">
         <bitmap
-            android:src="@drawable/logo" />
+            android:src="@drawable/splash_waitlesshost" />
     </item>
+
 
 </layer-list>
