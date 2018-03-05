@@ -6,23 +6,32 @@ import java.util.List;
 
 public class User {
     private String userID;
-    private String username;
+    private String firstName;
+    private String lastName;
+    private String telephone;
     private String email;
     private String password;
-    private String telephone;
-    private String photoUrl;
+    private String photoUrl;  // TODO
     private List<String> favorites; // store restaurant_ids
 
     public User() {
     }
 
-    public User(String userID, String username, String email, String password,
-                String telephone, String photoUrl, List<String> favorites) {
+    public User(String userID, String firstName, String lastName, String telephone, String email) {
         this.userID = userID;
-        this.username = username;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.telephone = telephone;
+        this.email = email;
+    }
+
+    public User(String userID, String firstName, String lastName, String telephone, String email, String password, String photoUrl, List<String> favorites) {
+        this.userID = userID;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.telephone = telephone;
         this.email = email;
         this.password = password;
-        this.telephone = telephone;
         this.photoUrl = photoUrl;
         this.favorites = favorites;
     }
@@ -35,12 +44,20 @@ public class User {
         this.userID = userID;
     }
 
-    public String getUsername() {
-        return username;
+    public String getFirstName() {
+        return firstName;
     }
 
-    public void setUsername(String username) {
-        this.username = username;
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
     }
 
     public String getEmail() {

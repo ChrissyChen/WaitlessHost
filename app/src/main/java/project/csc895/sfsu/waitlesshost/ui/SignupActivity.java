@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
+import android.telephony.PhoneNumberFormattingTextWatcher;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
@@ -56,6 +57,7 @@ public class SignupActivity extends AppCompatActivity {
         inputCuisine = (EditText) findViewById(R.id.restaurant_cuisine);
         inputAddress = (EditText) findViewById(R.id.restaurant_address);
         inputPhone = (EditText) findViewById(R.id.restaurant_phone);
+        inputPhone.addTextChangedListener(new PhoneNumberFormattingTextWatcher());
         inputEmail = (EditText) findViewById(R.id.email);
         inputPassword = (EditText) findViewById(R.id.password);
         progressBar = (ProgressBar) findViewById(R.id.progressBar);

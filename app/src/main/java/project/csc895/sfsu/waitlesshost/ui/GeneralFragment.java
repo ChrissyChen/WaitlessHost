@@ -4,6 +4,7 @@ import android.app.Fragment;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.BottomNavigationView;
+import android.telephony.PhoneNumberFormattingTextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -57,6 +58,7 @@ public class GeneralFragment extends Fragment {
         inputName = (EditText) view.findViewById(R.id.name);
         inputAddress = (EditText) view.findViewById(R.id.address);
         inputPhone = (EditText) view.findViewById(R.id.phone);
+        inputPhone.addTextChangedListener(new PhoneNumberFormattingTextWatcher());
         inputCuisine = (EditText) view.findViewById(R.id.cuisine);
         ImageView imageUpload = (ImageView) view.findViewById(R.id.imageUpload);
 
