@@ -42,6 +42,7 @@
     <string name="auth_failed">Authentication failed. Check your email and password or sign up.</string>
     <string name="login_succeed">Login succeeded!</string>
     <string name="login_fail">Login failed. Please activate your account with the link sent to your email.</string>
+    <string name="login_duplicate">Login failed. The account is registered with Waitless app.</string>
 
     <!-- Reset Password Page -->
     <string name="forgot_password_lbl">Forgot password?</string>
@@ -70,7 +71,15 @@
     <string name="logo">Logo</string>
     <string name="btn_save">Save</string>
 
-
+    <!-- Open Hours Fragment -->
+    <string name="Sunday">Sunday</string>
+    <string name="Monday">Monday</string>
+    <string name="Tuesday">Tuesday</string>
+    <string name="Wednesday">Wednesday</string>
+    <string name="Thursday">Thursday</string>
+    <string name="Friday">Friday</string>
+    <string name="Saturday">Saturday</string>
+    <string name="default_hours">11:00 AM - 11:00 PM</string>
 
 
 </resources>

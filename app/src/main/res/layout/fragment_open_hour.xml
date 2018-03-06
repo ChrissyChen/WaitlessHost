@@ -2,26 +2,273 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:padding="@dimen/activity_horizontal_margin">
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
 
-    <android.support.design.widget.TextInputLayout
+    <android.support.v7.widget.CardView
+        android:id="@+id/hoursCardView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textColorHint="@color/darkGrey">
+        android:layout_marginTop="20dp">
 
-        <EditText
-            android:id="@+id/hour"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:backgroundTint="@color/hintGrey"
-            android:hint="open hours page"
-            android:inputType="text"
-            android:maxLines="1"
-            android:textColor="@color/darkGrey" />
+            android:layout_height="match_parent"
+            android:orientation="vertical">
 
-    </android.support.design.widget.TextInputLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:id="@+id/SundayLine" >
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingLeft="@dimen/activity_horizontal_margin"
+                    android:paddingStart="@dimen/activity_horizontal_margin"
+                    android:paddingRight="@dimen/activity_horizontal_margin"
+                    android:paddingTop="12dp"
+                    android:paddingBottom="12dp"
+                    android:text="@string/Sunday"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/SundayHours"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingLeft="@dimen/activity_horizontal_margin"
+                    android:paddingStart="@dimen/activity_horizontal_margin"
+                    android:paddingRight="@dimen/activity_horizontal_margin"
+                    android:paddingTop="12dp"
+                    android:paddingBottom="12dp"
+                    android:gravity="end"
+                    android:text="@string/default_hours" />
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/grey" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:id="@+id/MondayLine" >
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingLeft="@dimen/activity_horizontal_margin"
+                    android:paddingStart="@dimen/activity_horizontal_margin"
+                    android:paddingRight="@dimen/activity_horizontal_margin"
+                    android:paddingTop="12dp"
+                    android:paddingBottom="12dp"
+                    android:text="@string/Monday"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/MondayHours"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingLeft="@dimen/activity_horizontal_margin"
+                    android:paddingStart="@dimen/activity_horizontal_margin"
+                    android:paddingRight="@dimen/activity_horizontal_margin"
+                    android:paddingTop="12dp"
+                    android:paddingBottom="12dp"
+                    android:gravity="end"
+                    android:text="@string/default_hours" />
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/grey" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:id="@+id/TuesdayLine" >
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingLeft="@dimen/activity_horizontal_margin"
+                    android:paddingStart="@dimen/activity_horizontal_margin"
+                    android:paddingRight="@dimen/activity_horizontal_margin"
+                    android:paddingTop="12dp"
+                    android:paddingBottom="12dp"
+                    android:text="@string/Tuesday"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/TuesdayHours"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingLeft="@dimen/activity_horizontal_margin"
+                    android:paddingStart="@dimen/activity_horizontal_margin"
+                    android:paddingRight="@dimen/activity_horizontal_margin"
+                    android:paddingTop="12dp"
+                    android:paddingBottom="12dp"
+                    android:gravity="end"
+                    android:text="@string/default_hours" />
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/grey" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:id="@+id/WednesdayLine" >
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingLeft="@dimen/activity_horizontal_margin"
+                    android:paddingStart="@dimen/activity_horizontal_margin"
+                    android:paddingRight="@dimen/activity_horizontal_margin"
+                    android:paddingTop="12dp"
+                    android:paddingBottom="12dp"
+                    android:text="@string/Wednesday"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/WednesdayHours"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingLeft="@dimen/activity_horizontal_margin"
+                    android:paddingStart="@dimen/activity_horizontal_margin"
+                    android:paddingRight="@dimen/activity_horizontal_margin"
+                    android:paddingTop="12dp"
+                    android:paddingBottom="12dp"
+                    android:gravity="end"
+                    android:text="@string/default_hours" />
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/grey" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:id="@+id/ThursdayLine" >
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingLeft="@dimen/activity_horizontal_margin"
+                    android:paddingStart="@dimen/activity_horizontal_margin"
+                    android:paddingRight="@dimen/activity_horizontal_margin"
+                    android:paddingTop="12dp"
+                    android:paddingBottom="12dp"
+                    android:text="@string/Thursday"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/ThursdayHours"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingLeft="@dimen/activity_horizontal_margin"
+                    android:paddingStart="@dimen/activity_horizontal_margin"
+                    android:paddingRight="@dimen/activity_horizontal_margin"
+                    android:paddingTop="12dp"
+                    android:paddingBottom="12dp"
+                    android:gravity="end"
+                    android:text="@string/default_hours" />
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/grey" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:id="@+id/FridayLine" >
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingLeft="@dimen/activity_horizontal_margin"
+                    android:paddingStart="@dimen/activity_horizontal_margin"
+                    android:paddingRight="@dimen/activity_horizontal_margin"
+                    android:paddingTop="12dp"
+                    android:paddingBottom="12dp"
+                    android:text="@string/Friday"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/FridayHours"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingLeft="@dimen/activity_horizontal_margin"
+                    android:paddingStart="@dimen/activity_horizontal_margin"
+                    android:paddingRight="@dimen/activity_horizontal_margin"
+                    android:paddingTop="12dp"
+                    android:paddingBottom="12dp"
+                    android:gravity="end"
+                    android:text="@string/default_hours" />
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/grey" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:id="@+id/SaturdayLine" >
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingLeft="@dimen/activity_horizontal_margin"
+                    android:paddingStart="@dimen/activity_horizontal_margin"
+                    android:paddingRight="@dimen/activity_horizontal_margin"
+                    android:paddingTop="12dp"
+                    android:paddingBottom="12dp"
+                    android:text="@string/Saturday"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/SaturdayHours"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingLeft="@dimen/activity_horizontal_margin"
+                    android:paddingStart="@dimen/activity_horizontal_margin"
+                    android:paddingRight="@dimen/activity_horizontal_margin"
+                    android:paddingTop="12dp"
+                    android:paddingBottom="12dp"
+                    android:gravity="end"
+                    android:text="@string/default_hours" />
+            </LinearLayout>
 
 
+
+        </LinearLayout>
+    </android.support.v7.widget.CardView>
+
+    <Button
+        android:id="@+id/save_button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/activity_horizontal_margin"
+        android:layout_marginTop="16dp"
+        android:background="@color/colorPrimary"
+        android:text="@string/btn_save"
+        android:textColor="@color/lightGrey"
+        android:textStyle="bold"  />
 </LinearLayout>

@@ -18,18 +18,28 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
 
 import project.csc895.sfsu.waitlesshost.R;
+import project.csc895.sfsu.waitlesshost.model.Restaurant;
 
 public class LoginActivity extends AppCompatActivity {
 
     private static final String TAG = "Login Activity";
+    private static final String RESTAURANT_CHILD = "restaurants";
+    private static final String EMAIL_CHILD = "email";
     private EditText inputEmail, inputPassword;
     private FirebaseAuth auth;
     private ProgressBar progressBar;
     private Button btnSignup, btnLogin, btnReset;
     private SharedPreferences pref;
     private SharedPreferences.Editor editor;
+    private boolean ifContinue = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -122,7 +132,12 @@ public class LoginActivity extends AppCompatActivity {
                                     } else {
                                         Toast.makeText(LoginActivity.this, getString(R.string.auth_failed), Toast.LENGTH_LONG).show();
                                     }
-                                } else {
+                                } else {  // valid for Firebase users: Waitless or Waitless Host
+//                                    checkIfUserIsValid(email);  // check if the user is a Waitless Host user
+//                                    if (ifContinue) {
+//                                        checkIfEmailVerified(email);
+//                                    }
+
                                     checkIfEmailVerified(email);
                                 }
                             }
@@ -131,13 +146,38 @@ public class LoginActivity extends AppCompatActivity {
         });
     }
 
-    private void checkIfEmailVerified(String email)
-    {
+    private void checkIfUserIsValid(String email) {
+        DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
+        Query query = mDatabase.child(RESTAURANT_CHILD)
+                .orderByChild(EMAIL_CHILD)
+                .equalTo(email);
+
+        query.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if (!dataSnapshot.hasChildren()) {
+                    Log.d(TAG, "NOT a valid user for Waitless Host!");
+                    Toast.makeText(LoginActivity.this, getString(R.string.login_duplicate), Toast.LENGTH_LONG).show();
+                    auth.signOut();
+                    ifContinue = false;
+                } else {
+                    ifContinue = true;
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+    }
+
+
+    private void checkIfEmailVerified(String email) {
         FirebaseUser user = auth.getCurrentUser();
 
         if (user != null) {
-            if (user.isEmailVerified())
-            {
+            if (user.isEmailVerified()) {
                 // user is verified, so you can finish this activity or send user to activity which you want.
                 Toast.makeText(LoginActivity.this, getString(R.string.login_succeed), Toast.LENGTH_SHORT).show();
 
@@ -149,9 +189,7 @@ public class LoginActivity extends AppCompatActivity {
                 intent.putExtra("Email", email);
                 startActivity(intent);
                 finish();
-            }
-            else
-            {
+            } else {
                 // email is not verified, so just prompt the message to the user and restart this activity.
                 // NOTE: don't forget to log out the user.
                 Toast.makeText(LoginActivity.this, getString(R.string.login_fail), Toast.LENGTH_LONG).show();

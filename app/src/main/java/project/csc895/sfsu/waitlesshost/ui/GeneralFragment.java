@@ -39,8 +39,6 @@ public class GeneralFragment extends Fragment {
     private static final String PHONE_CHILD = "telephone";
     private static final String CUISINE_CHILD = "cuisine";
     private static final String ARGS_RESTAURANT_ID = "restaurantID";
-    private FirebaseAuth mFirebaseAuth;
-    private FirebaseUser mFirebaseUser;
     private DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
     private String restaurantID;
     private EditText inputName, inputAddress, inputPhone, inputCuisine;
