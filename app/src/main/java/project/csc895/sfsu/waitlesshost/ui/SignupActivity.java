@@ -26,7 +26,10 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.ArrayList;
+
 import project.csc895.sfsu.waitlesshost.R;
+import project.csc895.sfsu.waitlesshost.model.Hour;
 import project.csc895.sfsu.waitlesshost.model.Restaurant;
 
 public class SignupActivity extends AppCompatActivity {
@@ -34,6 +37,7 @@ public class SignupActivity extends AppCompatActivity {
     private static final String TAG = "Signup Activity";
     private static final String RESTAURANT_CHILD = "restaurants";
     private static final String MANAGER_ID_CHILD = "managerID";
+    private static final String HOUR_CHILD = "hours";
     private EditText inputEmail, inputPassword, inputRestaurantName, inputCuisine, inputAddress, inputPhone;
     private Button btnSignIn, btnSignUp, btnResetPassword;
     private ProgressBar progressBar;
@@ -132,7 +136,11 @@ public class SignupActivity extends AppCompatActivity {
                                             Toast.LENGTH_LONG).show();
                                 } else {
                                     mFirebaseUser = mFirebaseAuth.getCurrentUser();
-                                    createNewRestaurantRecord(name, cuisine, address, phone, email);
+                                    // new a restaurant record in database
+                                    String restaurantID = createNewRestaurantRecord(name, cuisine, address, phone, email);
+                                    // new a hour record in database
+                                    createNewHourRecord(restaurantID);
+
                                     // NOTE: If the new account was created, the user is also signed in
                                     sendVerificationEmail();
                                 }
@@ -149,7 +157,8 @@ public class SignupActivity extends AppCompatActivity {
         progressBar.setVisibility(View.GONE);
     }
 
-    private void createNewRestaurantRecord(String name, String cuisine, String address, String phone, String email) {
+    private String createNewRestaurantRecord(String name, String cuisine, String address, String phone, String email) {
+        String key = null;
         if (mFirebaseUser != null) {
             String managerID = mFirebaseUser.getUid();
 
@@ -158,7 +167,7 @@ public class SignupActivity extends AppCompatActivity {
             //mDatabase.child(RESTAURANT_CHILD).push().setValue(restaurant);
 
             DatabaseReference ref = FirebaseDatabase.getInstance().getReference(RESTAURANT_CHILD);
-            String key = ref.push().getKey();
+            key = ref.push().getKey();
             Log.d("key:  ", key); // generated random id
 
             /* set each field individually */
@@ -173,11 +182,23 @@ public class SignupActivity extends AppCompatActivity {
             //getRestaurantRecordValueWithID(key);
             //getRestaurantRecordKey(managerID);  // another way to get randomly generated key
         }
-
-        // TODO do in background?
-        Log.d(TAG, "create a new restaurant");
+        return key;
     }
 
+    private void createNewHourRecord(String restaurantID) {
+        DatabaseReference ref = FirebaseDatabase.getInstance().getReference(HOUR_CHILD);
+        String key = ref.push().getKey();  // newly generated hourID
+
+        String defaultStartHour = getString(R.string.default_start_hour);
+        String defaultEndHour = getString(R.string.default_end_hour);
+        ArrayList<String> defaultHours = new ArrayList<>();
+        defaultHours.add(defaultStartHour);
+        defaultHours.add(defaultEndHour);
+
+        Hour hour = new Hour(key, restaurantID, defaultHours, defaultHours, defaultHours, defaultHours, defaultHours, defaultHours, defaultHours);
+        ref.child(key).setValue(hour);
+        Log.d("new Hour ID: ", key);
+    }
 
     private void getRestaurantRecordValueWithID(String key) {
         DatabaseReference ref = mDatabase.child(RESTAURANT_CHILD).child(key);

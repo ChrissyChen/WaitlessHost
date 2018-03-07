@@ -79,7 +79,7 @@
     <string name="Thursday">Thursday</string>
     <string name="Friday">Friday</string>
     <string name="Saturday">Saturday</string>
-    <string name="default_hours">11:00 AM - 11:00 PM</string>
-
-
+    <string name="default_start_hour">10:00 AM</string>
+    <string name="default_end_hour">10:00 PM</string>
+    <string name="hyphen">—</string>
 </resources>
