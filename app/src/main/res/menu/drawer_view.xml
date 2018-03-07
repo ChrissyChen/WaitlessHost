@@ -17,10 +17,10 @@
             android:id="@+id/nav_open_hours"
             android:icon="@drawable/ic_access_time_black_24px"
             android:title="@string/open_hours" />
-        <item
-            android:id="@+id/nav_menu"
-            android:icon="@drawable/ic_restaurant_menu_black_24px"
-            android:title="@string/menu" />
+        <!--<item-->
+            <!--android:id="@+id/nav_menu"-->
+            <!--android:icon="@drawable/ic_restaurant_menu_black_24px"-->
+            <!--android:title="@string/menu" />-->
         <item
             android:id="@+id/nav_guest"
             android:icon="@drawable/ic_group_black_24px"

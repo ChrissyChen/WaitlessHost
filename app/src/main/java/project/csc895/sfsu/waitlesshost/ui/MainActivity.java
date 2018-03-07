@@ -121,9 +121,9 @@ public class MainActivity extends AppCompatActivity {
             case R.id.nav_open_hours:
                 pushFragment(new OpenHourFragment());
                 break;
-            case R.id.nav_menu:
-                pushFragment(new MenuFragment());
-                break;
+//            case R.id.nav_menu:
+//                pushFragment(new MenuFragment());
+//                break;
             case R.id.nav_guest:
                 pushFragment(new GuestFragment());
                 break;
