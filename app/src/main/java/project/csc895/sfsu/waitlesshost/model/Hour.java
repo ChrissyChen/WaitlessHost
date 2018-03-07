@@ -10,7 +10,7 @@ public class Hour {
 
     private String hourID;
     private String restaurantID;
-    private ArrayList<String> Sunday, Monday, Tuesday, Wednesday, Thursday, Friday, Saturday;
+    private ArrayList<String> sunday, monday, tuesday, wednesday, thursday, friday, saturday;
 
     public Hour() {
     }
@@ -18,13 +18,13 @@ public class Hour {
     public Hour(String hourID, String restaurantID, ArrayList<String> sunday, ArrayList<String> monday, ArrayList<String> tuesday, ArrayList<String> wednesday, ArrayList<String> thursday, ArrayList<String> friday, ArrayList<String> saturday) {
         this.hourID = hourID;
         this.restaurantID = restaurantID;
-        this.Sunday = sunday;
-        this.Monday = monday;
-        this.Tuesday = tuesday;
-        this.Wednesday = wednesday;
-        this.Thursday = thursday;
-        this.Friday = friday;
-        this.Saturday = saturday;
+        this.sunday = sunday;
+        this.monday = monday;
+        this.tuesday = tuesday;
+        this.wednesday = wednesday;
+        this.thursday = thursday;
+        this.friday = friday;
+        this.saturday = saturday;
     }
 
     public String getHourID() {
@@ -44,58 +44,58 @@ public class Hour {
     }
 
     public ArrayList<String> getSunday() {
-        return Sunday;
+        return sunday;
     }
 
     public void setSunday(ArrayList<String> sunday) {
-        Sunday = sunday;
+        this.sunday = sunday;
     }
 
     public ArrayList<String> getMonday() {
-        return Monday;
+        return monday;
     }
 
     public void setMonday(ArrayList<String> monday) {
-        Monday = monday;
+        this.monday = monday;
     }
 
     public ArrayList<String> getTuesday() {
-        return Tuesday;
+        return tuesday;
     }
 
     public void setTuesday(ArrayList<String> tuesday) {
-        Tuesday = tuesday;
+        this.tuesday = tuesday;
     }
 
     public ArrayList<String> getWednesday() {
-        return Wednesday;
+        return wednesday;
     }
 
     public void setWednesday(ArrayList<String> wednesday) {
-        Wednesday = wednesday;
+        this.wednesday = wednesday;
     }
 
     public ArrayList<String> getThursday() {
-        return Thursday;
+        return thursday;
     }
 
     public void setThursday(ArrayList<String> thursday) {
-        Thursday = thursday;
+        this.thursday = thursday;
     }
 
     public ArrayList<String> getFriday() {
-        return Friday;
+        return friday;
     }
 
     public void setFriday(ArrayList<String> friday) {
-        Friday = friday;
+        this.friday = friday;
     }
 
     public ArrayList<String> getSaturday() {
-        return Saturday;
+        return saturday;
     }
 
     public void setSaturday(ArrayList<String> saturday) {
-        Saturday = saturday;
+        this.saturday = saturday;
     }
 }

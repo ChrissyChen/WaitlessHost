@@ -20,6 +20,10 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
+import org.w3c.dom.Text;
+
+import java.util.ArrayList;
+
 import project.csc895.sfsu.waitlesshost.R;
 import project.csc895.sfsu.waitlesshost.model.Hour;
 import project.csc895.sfsu.waitlesshost.model.Restaurant;
@@ -31,13 +35,13 @@ public class OpenHourFragment extends Fragment {
     private static final String ARGS_RESTAURANT_ID = "restaurantID";
     private static final String HOUR_CHILD = "hours";
     private static final String RESTAURANT_ID_CHILD = "restaurantID";
-    private static final String SUNDAY_CHILD = "Sunday";
-    private static final String MONDAY_CHILD = "Monday";
-    private static final String TUESDAY_CHILD = "Tuesday";
-    private static final String WEDNESDAY_CHILD = "Wednesday";
-    private static final String THURSDAY_CHILD = "Thursday";
-    private static final String FRIDAY_CHILD = "Friday";
-    private static final String SATURDAY_CHILD = "Saturday";
+    private static final String SUNDAY_CHILD = "sunday";
+    private static final String MONDAY_CHILD = "monday";
+    private static final String TUESDAY_CHILD = "tuesday";
+    private static final String WEDNESDAY_CHILD = "wednesday";
+    private static final String THURSDAY_CHILD = "thursday";
+    private static final String FRIDAY_CHILD = "friday";
+    private static final String SATURDAY_CHILD = "saturday";
 
     private DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
     private String restaurantID, hourID;
@@ -61,28 +65,41 @@ public class OpenHourFragment extends Fragment {
         initTextViews(view);
         loadHoursWithRestaurantID();   // retrieve data from database
 
-
         Button btnSave = (Button) view.findViewById(R.id.save_button);
         btnSave.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
- //               DatabaseReference ref = mDatabase.child(RESTAURANT_CHILD).child(restaurantID);
-//                String name = inputName.getText().toString().trim();
-//                String address = inputAddress.getText().toString().trim();
-//                String phone = inputPhone.getText().toString().trim();
-//                String cuisine = inputCuisine.getText().toString().trim();
-//                ref.child(NAME_CHILD).setValue(name);
-//                ref.child(ADDRESS_CHILD).setValue(address);
-//                ref.child(PHONE_CHILD).setValue(phone);
-//                ref.child(CUISINE_CHILD).setValue(cuisine);
-
-                Toast.makeText(getActivity(), "Open Hours Saved! ", Toast.LENGTH_SHORT).show();
+                saveHoursToDatabase();
             }
         });
 
-
-
         return view;
+    }
+
+    private void saveHoursToDatabase() {
+        DatabaseReference ref = mDatabase.child(HOUR_CHILD).child(hourID);
+        ArrayList<String> updatedHoursList = new ArrayList<>();
+
+        updateHours(updatedHoursList, sundayStartHour, sundayEndHour, ref, SUNDAY_CHILD);
+        updateHours(updatedHoursList, mondayStartHour, mondayEndHour, ref, MONDAY_CHILD);
+        updateHours(updatedHoursList, tuesdayStartHour, tuesdayEndHour, ref, TUESDAY_CHILD);
+        updateHours(updatedHoursList, wednesdayStartHour, wednesdayEndHour, ref, WEDNESDAY_CHILD);
+        updateHours(updatedHoursList, thursdayStartHour, thursdayEndHour, ref, THURSDAY_CHILD);
+        updateHours(updatedHoursList, fridayStartHour, fridayEndHour, ref, FRIDAY_CHILD);
+        updateHours(updatedHoursList, saturdayStartHour, saturdayEndHour, ref, SATURDAY_CHILD);
+
+        Toast.makeText(getActivity(), "Open Hours Saved! ", Toast.LENGTH_SHORT).show();
+    }
+
+    private void updateHours(ArrayList<String> updatedHoursList, TextView startTextView, TextView endTextView,
+                            DatabaseReference ref, String databaseChild) {
+
+        String start = startTextView.getText().toString();
+        String end = endTextView.getText().toString();
+        updatedHoursList.add(start);
+        updatedHoursList.add(end);
+        ref.child(databaseChild).setValue(updatedHoursList);
+        updatedHoursList.clear();   // clear those two strings and get ready to reuse the arraylist
     }
 
     private void loadHoursWithRestaurantID() {
