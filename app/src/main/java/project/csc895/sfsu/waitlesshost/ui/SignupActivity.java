@@ -31,6 +31,7 @@ import java.util.ArrayList;
 import project.csc895.sfsu.waitlesshost.R;
 import project.csc895.sfsu.waitlesshost.model.Hour;
 import project.csc895.sfsu.waitlesshost.model.Restaurant;
+import project.csc895.sfsu.waitlesshost.model.RestaurantTable;
 
 public class SignupActivity extends AppCompatActivity {
 
@@ -38,6 +39,7 @@ public class SignupActivity extends AppCompatActivity {
     private static final String RESTAURANT_CHILD = "restaurants";
     private static final String MANAGER_ID_CHILD = "managerID";
     private static final String HOUR_CHILD = "hours";
+    private static final String RESTAURANT_TABLE_CHILD = "restaurantTables";
     private EditText inputEmail, inputPassword, inputRestaurantName, inputCuisine, inputAddress, inputPhone;
     private Button btnSignIn, btnSignUp, btnResetPassword;
     private ProgressBar progressBar;
@@ -140,6 +142,7 @@ public class SignupActivity extends AppCompatActivity {
                                     String restaurantID = createNewRestaurantRecord(name, cuisine, address, phone, email);
                                     // new a hour record in database
                                     createNewHourRecord(restaurantID);
+                                    createNewRestaurantTableRecord(restaurantID);
 
                                     // NOTE: If the new account was created, the user is also signed in
                                     sendVerificationEmail();
@@ -199,6 +202,16 @@ public class SignupActivity extends AppCompatActivity {
         ref.child(key).setValue(hour);
         Log.d("new Hour ID: ", key);
     }
+
+    private void createNewRestaurantTableRecord(String restaurantID) {
+        DatabaseReference ref = FirebaseDatabase.getInstance().getReference(RESTAURANT_TABLE_CHILD);
+        String key = ref.push().getKey();  // newly generated restaurantTableID
+
+        RestaurantTable restaurantTable = new RestaurantTable(key, restaurantID, 0, 0, 0, 0); //init tables with num 0
+        ref.child(key).setValue(restaurantTable);
+        Log.d("new restaurantTable ID:", key);
+    }
+
 
     private void getRestaurantRecordValueWithID(String key) {
         DatabaseReference ref = mDatabase.child(RESTAURANT_CHILD).child(key);

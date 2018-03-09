@@ -20,13 +20,10 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
-import org.w3c.dom.Text;
-
 import java.util.ArrayList;
 
 import project.csc895.sfsu.waitlesshost.R;
 import project.csc895.sfsu.waitlesshost.model.Hour;
-import project.csc895.sfsu.waitlesshost.model.Restaurant;
 
 
 public class OpenHourFragment extends Fragment {
@@ -42,7 +39,6 @@ public class OpenHourFragment extends Fragment {
     private static final String THURSDAY_CHILD = "thursday";
     private static final String FRIDAY_CHILD = "friday";
     private static final String SATURDAY_CHILD = "saturday";
-
     private DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
     private String restaurantID, hourID;
     private TextView sundayStartHour, sundayEndHour, mondayStartHour, mondayEndHour,

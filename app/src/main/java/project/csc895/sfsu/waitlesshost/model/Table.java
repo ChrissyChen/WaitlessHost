@@ -3,22 +3,22 @@ package project.csc895.sfsu.waitlesshost.model;
 public class Table {
     private String tableID;
     private String restaurantID;
-    private String orderID;
+    //private String orderID;
     private int tableSize;
-    private boolean isOccupied;
     private String tableName;
+    private boolean isOccupied;
+    private String userID;
 
     public Table() {
     }
 
-    public Table(String tableID, String restaurantID, String orderID,
-                 int tableSize, boolean isOccupied, String tableName) {
+    public Table(String tableID, String restaurantID, int tableSize, String tableName, boolean isOccupied, String userID) {
         this.tableID = tableID;
         this.restaurantID = restaurantID;
-        this.orderID = orderID;
         this.tableSize = tableSize;
-        this.isOccupied = isOccupied;
         this.tableName = tableName;
+        this.isOccupied = isOccupied;
+        this.userID = userID;
     }
 
     public String getTableID() {
@@ -37,20 +37,20 @@ public class Table {
         this.restaurantID = restaurantID;
     }
 
-    public String getOrderID() {
-        return orderID;
-    }
-
-    public void setOrderID(String orderID) {
-        this.orderID = orderID;
-    }
-
     public int getTableSize() {
         return tableSize;
     }
 
     public void setTableSize(int tableSize) {
         this.tableSize = tableSize;
+    }
+
+    public String getTableName() {
+        return tableName;
+    }
+
+    public void setTableName(String tableName) {
+        this.tableName = tableName;
     }
 
     public boolean isOccupied() {
@@ -61,11 +61,11 @@ public class Table {
         isOccupied = occupied;
     }
 
-    public String getTableName() {
-        return tableName;
+    public String getUserID() {
+        return userID;
     }
 
-    public void setTableName(String tableName) {
-        this.tableName = tableName;
+    public void setUserID(String userID) {
+        this.userID = userID;
     }
 }
