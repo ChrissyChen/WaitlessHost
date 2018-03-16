@@ -4,22 +4,18 @@ public class Waitlist {
 
     private String waitlistID;
     private String restaurantID;
-    private String userID;
-    private String waitlistNumber; // based on tableSize, A1, B2...
-    private String partyNumber; // tableSize TODO: 9/14/17
-    private boolean hasShownUp;  //// TODO: 9/14/17
+    private int waitNumTableA, waitNumTableB, waitNumTableC, waitNumTableD;
 
     public Waitlist() {
     }
 
-    public Waitlist(String waitlistID, String restaurantID, String userID,
-                    String waitlistNumber, String partyNumber, boolean hasShownUp) {
+    public Waitlist(String waitlistID, String restaurantID, int waitNumTableA, int waitNumTableB, int waitNumTableC, int waitNumTableD) {
         this.waitlistID = waitlistID;
         this.restaurantID = restaurantID;
-        this.userID = userID;
-        this.waitlistNumber = waitlistNumber;
-        this.partyNumber = partyNumber;
-        this.hasShownUp = hasShownUp;
+        this.waitNumTableA = waitNumTableA;
+        this.waitNumTableB = waitNumTableB;
+        this.waitNumTableC = waitNumTableC;
+        this.waitNumTableD = waitNumTableD;
     }
 
     public String getWaitlistID() {
@@ -38,36 +34,36 @@ public class Waitlist {
         this.restaurantID = restaurantID;
     }
 
-    public String getUserID() {
-        return userID;
+    public int getWaitNumTableA() {
+        return waitNumTableA;
     }
 
-    public void setUserID(String userID) {
-        this.userID = userID;
+    public void setWaitNumTableA(int waitNumTableA) {
+        this.waitNumTableA = waitNumTableA;
     }
 
-    public String getWaitlistNumber() {
-        return waitlistNumber;
+    public int getWaitNumTableB() {
+        return waitNumTableB;
     }
 
-    public void setWaitlistNumber(String waitlistNumber) {
-        this.waitlistNumber = waitlistNumber;
+    public void setWaitNumTableB(int waitNumTableB) {
+        this.waitNumTableB = waitNumTableB;
     }
 
-    public String getPartyNumber() {
-        return partyNumber;
+    public int getWaitNumTableC() {
+        return waitNumTableC;
     }
 
-    public void setPartyNumber(String partyNumber) {
-        this.partyNumber = partyNumber;
+    public void setWaitNumTableC(int waitNumTableC) {
+        this.waitNumTableC = waitNumTableC;
     }
 
-    public boolean isHasShownUp() {
-        return hasShownUp;
+    public int getWaitNumTableD() {
+        return waitNumTableD;
     }
 
-    public void setHasShownUp(boolean hasShownUp) {
-        this.hasShownUp = hasShownUp;
+    public void setWaitNumTableD(int waitNumTableD) {
+        this.waitNumTableD = waitNumTableD;
     }
 }
 

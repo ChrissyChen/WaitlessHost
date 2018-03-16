@@ -88,7 +88,7 @@
     <string name="tableA">Table A (size 1 – 2)</string>
     <string name="tableB">Table B (size 3 – 4)</string>
     <string name="tableC">Table C (size 5 – 6)</string>
-    <string name="tableD">Table D (size 7+)</string>
+    <string name="tableD">Table D (size 7 – 10)</string>
     <string name="empty_number">Number is empty. Enter a number!</string>
     <string name="big_number_error">Number is too big. Enter a number that less than 20!</string>
 
