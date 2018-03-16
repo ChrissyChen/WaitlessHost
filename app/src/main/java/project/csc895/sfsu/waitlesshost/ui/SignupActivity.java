@@ -219,7 +219,7 @@ public class SignupActivity extends AppCompatActivity {
         DatabaseReference ref = FirebaseDatabase.getInstance().getReference(WAITLIST_CHILD);
         String key = ref.push().getKey();  // newly generated waitlistID
 
-        Waitlist waitlist = new Waitlist(key, restaurantID, 0, 0, 0, 0);
+        Waitlist waitlist = new Waitlist(key, restaurantID, 0, 0, 0, 0, 0, 0, 0, 0);
         ref.child(key).setValue(waitlist);
     }
 

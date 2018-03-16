@@ -5,17 +5,22 @@ public class Waitlist {
     private String waitlistID;
     private String restaurantID;
     private int waitNumTableA, waitNumTableB, waitNumTableC, waitNumTableD;
+    private int counterTableA, counterTableB, counterTableC, counterTableD;
 
     public Waitlist() {
     }
 
-    public Waitlist(String waitlistID, String restaurantID, int waitNumTableA, int waitNumTableB, int waitNumTableC, int waitNumTableD) {
+    public Waitlist(String waitlistID, String restaurantID, int waitNumTableA, int waitNumTableB, int waitNumTableC, int waitNumTableD, int counterTableA, int counterTableB, int counterTableC, int counterTableD) {
         this.waitlistID = waitlistID;
         this.restaurantID = restaurantID;
         this.waitNumTableA = waitNumTableA;
         this.waitNumTableB = waitNumTableB;
         this.waitNumTableC = waitNumTableC;
         this.waitNumTableD = waitNumTableD;
+        this.counterTableA = counterTableA;
+        this.counterTableB = counterTableB;
+        this.counterTableC = counterTableC;
+        this.counterTableD = counterTableD;
     }
 
     public String getWaitlistID() {
@@ -65,6 +70,36 @@ public class Waitlist {
     public void setWaitNumTableD(int waitNumTableD) {
         this.waitNumTableD = waitNumTableD;
     }
+
+    public int getCounterTableA() {
+        return counterTableA;
+    }
+
+    public void setCounterTableA(int counterTableA) {
+        this.counterTableA = counterTableA;
+    }
+
+    public int getCounterTableB() {
+        return counterTableB;
+    }
+
+    public void setCounterTableB(int counterTableB) {
+        this.counterTableB = counterTableB;
+    }
+
+    public int getCounterTableC() {
+        return counterTableC;
+    }
+
+    public void setCounterTableC(int counterTableC) {
+        this.counterTableC = counterTableC;
+    }
+
+    public int getCounterTableD() {
+        return counterTableD;
+    }
+
+    public void setCounterTableD(int counterTableD) {
+        this.counterTableD = counterTableD;
+    }
 }
-
-
