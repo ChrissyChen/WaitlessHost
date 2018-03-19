@@ -80,10 +80,13 @@ public class MainActivity extends AppCompatActivity {
 
         View navHeader = navigationView.getHeaderView(0);
         drawerName = navHeader.findViewById(R.id.drawer_name);
+
+        loadRestaurantNameAndID(mFirebaseUser.getUid());
+
         TextView drawerEmail = navHeader.findViewById(R.id.drawer_email);
         drawerEmail.setText(email);
         // Load name in drawer header and get restaurant ID
-        loadRestaurantNameAndID(mFirebaseUser.getUid());
+
 
         navigationView.setNavigationItemSelectedListener(
                 new NavigationView.OnNavigationItemSelectedListener() {
@@ -113,7 +116,9 @@ public class MainActivity extends AppCompatActivity {
                 pushFragment(new HomeFragment());
                 break;
             case R.id.nav_general_settings:
-                pushFragment(new GeneralFragment());
+                GeneralFragment f = new GeneralFragment();
+                Log.d(TAG, f.toString());
+                pushFragment(f);
                 break;
             case R.id.nav_table:
                 pushFragment(new TableFragment());
@@ -138,10 +143,12 @@ public class MainActivity extends AppCompatActivity {
 
         // pass data from activity to fragment
         Bundle args = new Bundle();
-        args.putString(ARGS_RESTAURANT_ID, restaurantID);
-//        args.putInt("Integer", Integer value);
-//        args.putDouble("Double", Double value);
-        fragment.setArguments(args);
+        if (restaurantID != null) {
+            args.putString(ARGS_RESTAURANT_ID, restaurantID);
+            fragment.setArguments(args);
+        } else {
+            Log.d(TAG, "restaurantID is null!");
+        }
 
         FragmentManager fragmentManager = getFragmentManager();
         if (fragmentManager != null) {
@@ -191,10 +198,11 @@ public class MainActivity extends AppCompatActivity {
                     Log.d(TAG, "NO RESULT FOUND!");
                 } else {
                     for (DataSnapshot objSnapshot: dataSnapshot.getChildren()) {
-                        restaurantID = objSnapshot.getKey();
+                        //restaurantID = objSnapshot.getKey();
 
                         Restaurant restaurant = objSnapshot.getValue(Restaurant.class);
                         if (restaurant != null) {
+                            restaurantID = restaurant.getRestaurantID();
                             String name = restaurant.getName();
                             drawerName.setText(name);
                             // another way to get restaurantID: restaurant.getRestaurantID();

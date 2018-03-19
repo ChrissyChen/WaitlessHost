@@ -181,7 +181,7 @@ public class SignupActivity extends AppCompatActivity {
 //            ref.child(key).child("address").setValue(address);
 //            ref.child(key).child("telephone").setValue(phone);
 //            ref.child(key).child("managerID").setValue(managerID);
-            Restaurant restaurant = new Restaurant(key, name, cuisine, address, phone, managerID, email);
+            Restaurant restaurant = new Restaurant(key, name, null, cuisine, address, phone, managerID, email);
             ref.child(key).setValue(restaurant);
 
 
