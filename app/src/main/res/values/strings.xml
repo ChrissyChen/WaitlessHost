@@ -92,4 +92,14 @@
     <string name="empty_number">Number is empty. Enter a number!</string>
     <string name="big_number_error">Number is too big. Enter a number that less than 20!</string>
 
+    <!-- Guest Fragment -->
+    <string name="waiting">Waiting</string>
+    <string name="dining">Dining</string>
+    <string name="cancelled">Cancelled</string>
+    <string name="completed">Completed</string>
+    <string name="no_guest">No Guest</string>
+    <string name="number_name">Number Name</string>
+
+
+
 </resources>

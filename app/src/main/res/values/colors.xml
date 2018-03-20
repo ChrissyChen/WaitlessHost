@@ -12,6 +12,11 @@
     <color name="defaultBackground">#fafafa</color>
     <color name="hintGrey">#b3b1b1</color>
 
+    <color name="bg_waiting">#69ced7</color>
+    <color name="bg_dining">#f36f51</color>
+    <color name="bg_cancelled">#ffc03a</color>
+    <color name="bg_completed">#3cbe47</color>
+
     <color name="bg_login">#26ae90</color>
     <color name="bg_register">#2e3237</color>
     <color name="bg_main">#428bca</color>
