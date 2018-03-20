@@ -101,7 +101,7 @@ public class NumberDetailedActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 // todo popup window and trigger change status to waiting, numWait +1
-
+                showWaitPopupWindow();
             }
         });
     }
@@ -183,6 +183,7 @@ public class NumberDetailedActivity extends AppCompatActivity {
         });
     }
 
+    /* Cancel a number */
     private void showCancelPopupWindow() {
         LayoutInflater inflater = (LayoutInflater) NumberDetailedActivity.this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         if (inflater != null) {
@@ -216,11 +217,11 @@ public class NumberDetailedActivity extends AppCompatActivity {
         DatabaseReference numberRef = mDatabase.child(NUMBER_CHILD).child(numberID);
         numberRef.child(STATUS_CHILD).setValue(STATUS_CANCELLED);
 
-        updateWaitlistInfo();
+        updateWaitlistInfoWhenCancel();
         Toast.makeText(NumberDetailedActivity.this, getString(R.string.cancel_succeed), Toast.LENGTH_SHORT).show();
     }
 
-    private void updateWaitlistInfo() {
+    private void updateWaitlistInfoWhenCancel() {
         DatabaseReference ref = mDatabase.child(WAITLIST_CHILD).child(waitlistID);
         if (numberName.charAt(0) == 'A') {
             waitNumTableA -= 1;
@@ -236,6 +237,63 @@ public class NumberDetailedActivity extends AppCompatActivity {
             ref.child(WAIT_NUM_TABLE_D_CHILD).setValue(waitNumTableD);
         }
     }
+
+
+    /* Add a number back to the waiting list */
+    private void showWaitPopupWindow() {
+        LayoutInflater inflater = (LayoutInflater) NumberDetailedActivity.this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        if (inflater != null) {
+            View customView = inflater.inflate(R.layout.popup_window_wait, null);
+            final PopupWindow popupWindow = new PopupWindow(customView, LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT);
+            popupWindow.showAtLocation(mLinearLayout, Gravity.CENTER, 0, 0);
+
+            Button yesButton = (Button) customView.findViewById(R.id.yesButton);
+            Button noButton = (Button) customView.findViewById(R.id.noButton);
+            yesButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    addNumberBackToWaitingList();
+                    popupWindow.dismiss();
+
+                }
+            });
+            noButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    popupWindow.dismiss();
+                }
+            });
+        }
+    }
+
+    private void addNumberBackToWaitingList() {
+        //set number status to waiting. update db. update textview ui (auto)
+        //waitNumTable +1
+        //toast
+        DatabaseReference numberRef = mDatabase.child(NUMBER_CHILD).child(numberID);
+        numberRef.child(STATUS_CHILD).setValue(STATUS_WAITING);
+
+        updateWaitlistInfoWhenWait();
+        Toast.makeText(NumberDetailedActivity.this, getString(R.string.wait_succeed), Toast.LENGTH_LONG).show();
+    }
+
+    private void updateWaitlistInfoWhenWait() {
+        DatabaseReference ref = mDatabase.child(WAITLIST_CHILD).child(waitlistID);
+        if (numberName.charAt(0) == 'A') {
+            waitNumTableA += 1;
+            ref.child(WAIT_NUM_TABLE_A_CHILD).setValue(waitNumTableA);
+        } else if (numberName.charAt(0) == 'B') {
+            waitNumTableB += 1;
+            ref.child(WAIT_NUM_TABLE_B_CHILD).setValue(waitNumTableB);
+        } else if (numberName.charAt(0) == 'C') {
+            waitNumTableC += 1;
+            ref.child(WAIT_NUM_TABLE_C_CHILD).setValue(waitNumTableC);
+        } else if (numberName.charAt(0) == 'D') {
+            waitNumTableD += 1;
+            ref.child(WAIT_NUM_TABLE_D_CHILD).setValue(waitNumTableD);
+        }
+    }
+
 
     @Override
     public void onBackPressed() {

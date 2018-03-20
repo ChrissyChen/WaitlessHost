@@ -14,7 +14,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:textColor="@color/colorPrimaryDark"
-        android:text="@string/cancel_message"
+        android:text="@string/wait_message"
         android:textSize="18sp" />
 
 
