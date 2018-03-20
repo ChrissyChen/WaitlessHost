@@ -35,7 +35,10 @@
         <activity
             android:name=".ui.ResetPasswordActivity"
             android:label="@string/reset_password" />
-
+        <activity
+            android:name=".ui.NumberDetailedActivity"
+            android:label="@string/number_detail"
+            android:theme="@style/AppTheme"/>
 
     </application>
 

@@ -2,6 +2,7 @@ package project.csc895.sfsu.waitlesshost.ui;
 
 import android.app.Fragment;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
@@ -35,6 +36,8 @@ public class GuestFragment extends Fragment {
     private static final String STATUS_DINING = "Dining";
     private static final String STATUS_CANCELLED = "Cancelled";
     private static final String STATUS_COMPLETED = "Completed";
+    public final static String EXTRA_NUMBER_ID = "Pass Number id";
+    public final static String EXTRA_RESTAURANT_ID = "Pass Restaurant id";
     private String restaurantID;
     private LinearLayout guestLinearLayout;
     private TextView noGuestTextView;
@@ -215,12 +218,10 @@ public class GuestFragment extends Fragment {
                 @Override
                 public void onClick(View v) {
                     Context context = v.getContext();
-//                    Intent intent = new Intent(context, NumberDetailedActivity.class);
-//                    //intent.putExtra(EXTRA_NUMBER, number);// pass number obj
-//
-//                    intent.putExtra(EXTRA_NUMBER_ID, number.getNumberID());// pass number id
-//                    intent.putExtra(EXTRA_RESTAURANT_ID, number.getRestaurantID());
-//                    context.startActivity(intent);
+                    Intent intent = new Intent(context, NumberDetailedActivity.class);
+                    intent.putExtra(EXTRA_NUMBER_ID, number.getNumberID());// pass number id
+                    intent.putExtra(EXTRA_RESTAURANT_ID, number.getRestaurantID());
+                    context.startActivity(intent);
                 }
             });
         }

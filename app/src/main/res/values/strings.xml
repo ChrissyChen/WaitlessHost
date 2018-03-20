@@ -100,6 +100,20 @@
     <string name="no_guest">No Guest</string>
     <string name="number_name">Number Name</string>
 
-
-
+    <!-- Number Detailed Activity -->
+    <string name="number_detail">Number Details</string>
+    <string name="number">Number</string>
+    <string name="status">Status</string>
+    <string name="customer">Customer</string>
+    <string name="telephone">Telephone</string>
+    <string name="partyNumber">Party Number</string>
+    <string name="createdTime">Created Time</string>
+    <string name="change_to_waiting">Add back to Waitlist</string>
+    <string name="cancel">Cancel</string>
+    <string name="complete">Complete</string>
+    <string name="back">Back</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
+    <string name="cancel_message">Add the number to the CANCEL list?</string>
+    <string name="cancel_succeed">The number has been cancelled!</string>
 </resources>
