@@ -100,7 +100,7 @@ public class NumberDetailedActivity extends AppCompatActivity {
         waitButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // todo popup window and trigger change status to waiting, numWait +1
+                // popup window and trigger change status to waiting, numWait +1
                 showWaitPopupWindow();
             }
         });

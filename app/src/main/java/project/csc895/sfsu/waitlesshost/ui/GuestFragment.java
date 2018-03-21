@@ -11,6 +11,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -39,8 +40,8 @@ public class GuestFragment extends Fragment {
     public final static String EXTRA_NUMBER_ID = "Pass Number id";
     public final static String EXTRA_RESTAURANT_ID = "Pass Restaurant id";
     private String restaurantID;
-    private LinearLayout guestLinearLayout;
     private TextView noGuestTextView;
+    private ImageView addNumberImageView;
     private RecyclerView waitingRecyclerView, diningRecyclerView, cancelledRecyclerView,completedRecyclerView;
     private DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
 
@@ -64,8 +65,17 @@ public class GuestFragment extends Fragment {
     }
 
     private void initViews(View view) {
-        guestLinearLayout = (LinearLayout) view.findViewById(R.id.guestLinearLayout);
         noGuestTextView = (TextView) view.findViewById(R.id.noGuest);
+        addNumberImageView = (ImageView) view.findViewById(R.id.addNewNumber);
+        addNumberImageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // restaurant will help walk-in guests get a number before seated
+                Intent intent = new Intent(getActivity(), RestaurantGetNumberActivity.class);
+                intent.putExtra(EXTRA_RESTAURANT_ID, restaurantID);
+                startActivity(intent);
+            }
+        });
 
         waitingRecyclerView = (RecyclerView) view.findViewById(R.id.waiting_list);
         diningRecyclerView = (RecyclerView) view.findViewById(R.id.dining_list);

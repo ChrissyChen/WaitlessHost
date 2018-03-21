@@ -99,6 +99,7 @@
     <string name="completed">Completed</string>
     <string name="no_guest">No Guest</string>
     <string name="number_name">Number Name</string>
+    <string name="add_new_number">Add new number</string>
 
     <!-- Number Detailed Activity -->
     <string name="number_detail">Number Details</string>
@@ -119,6 +120,17 @@
     <string name="wait_message">Add the number back to the Waiting list?</string>
     <string name="wait_succeed">The number has been added back to the waiting list!</string>
 
-
+    <!-- Restaurant Get Number Activity -->
+    <string name="restaurant_get_number">Get A Number by Restaurant</string>
+    <string name="first_name">* First Name</string>
+    <string name="last_name">Last Name</string>
+    <string name="email">* Email</string>
+    <string name="party_number">* Party Number</string>
+    <string name="confirm">Confirm</string>
+    <string name="empty_first_name">First Name is empty. Enter first name!</string>
+    <string name="empty_party">Party number is empty. Enter party number!</string>
+    <string name="large_party">Party number is larger than 10. Please create multiple numbers separately!</string>
+    <string name="number_added">Number Added!</string>
+    <string name="close">Close</string>
 
 </resources>

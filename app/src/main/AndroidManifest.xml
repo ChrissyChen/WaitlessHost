@@ -39,6 +39,10 @@
             android:name=".ui.NumberDetailedActivity"
             android:label="@string/number_detail"
             android:theme="@style/AppTheme"/>
+        <activity
+            android:name=".ui.RestaurantGetNumberActivity"
+            android:label="@string/restaurant_get_number"
+            android:theme="@style/AppTheme"/>
 
     </application>
 
