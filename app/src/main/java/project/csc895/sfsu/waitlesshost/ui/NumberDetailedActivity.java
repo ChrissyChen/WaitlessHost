@@ -6,6 +6,8 @@ package project.csc895.sfsu.waitlesshost.ui;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -189,6 +191,10 @@ public class NumberDetailedActivity extends AppCompatActivity {
         if (inflater != null) {
             View customView = inflater.inflate(R.layout.popup_window_cancel, null);
             final PopupWindow popupWindow = new PopupWindow(customView, LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT);
+//            popupWindow.setOutsideTouchable(true);
+//            popupWindow.setFocusable(true);
+//            popupWindow.setElevation(10);
+//            popupWindow.setBackgroundDrawable(new ColorDrawable(Color.WHITE));
             popupWindow.showAtLocation(mLinearLayout, Gravity.CENTER, 0, 0);
 
             Button yesButton = (Button) customView.findViewById(R.id.yesButton);
@@ -245,6 +251,10 @@ public class NumberDetailedActivity extends AppCompatActivity {
         if (inflater != null) {
             View customView = inflater.inflate(R.layout.popup_window_wait, null);
             final PopupWindow popupWindow = new PopupWindow(customView, LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT);
+//            popupWindow.setOutsideTouchable(false);
+//            popupWindow.setFocusable(true);
+//            popupWindow.setElevation(8);
+//            popupWindow.setBackgroundDrawable(new ColorDrawable(Color.BLACK));
             popupWindow.showAtLocation(mLinearLayout, Gravity.CENTER, 0, 0);
 
             Button yesButton = (Button) customView.findViewById(R.id.yesButton);

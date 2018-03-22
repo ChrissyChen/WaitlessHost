@@ -6,19 +6,19 @@ public class Table {
     //private String orderID;
     private int tableSize;
     private String tableName;
-    private boolean isOccupied;
-    private String userID;
+    private String status;    // open, seated, dirty
+    private String numberID;  // NULL if table status is open or dirty. Only has value if table status is seated
 
     public Table() {
     }
 
-    public Table(String tableID, String restaurantID, int tableSize, String tableName, boolean isOccupied, String userID) {
+    public Table(String tableID, String restaurantID, int tableSize, String tableName, String status, String numberID) {
         this.tableID = tableID;
         this.restaurantID = restaurantID;
         this.tableSize = tableSize;
         this.tableName = tableName;
-        this.isOccupied = isOccupied;
-        this.userID = userID;
+        this.status = status;
+        this.numberID = numberID;
     }
 
     public String getTableID() {
@@ -53,19 +53,19 @@ public class Table {
         this.tableName = tableName;
     }
 
-    public boolean isOccupied() {
-        return isOccupied;
+    public String getStatus() {
+        return status;
     }
 
-    public void setOccupied(boolean occupied) {
-        isOccupied = occupied;
+    public void setStatus(String status) {
+        this.status = status;
     }
 
-    public String getUserID() {
-        return userID;
+    public String getNumberID() {
+        return numberID;
     }
 
-    public void setUserID(String userID) {
-        this.userID = userID;
+    public void setNumberID(String numberID) {
+        this.numberID = numberID;
     }
 }

@@ -236,7 +236,7 @@ public class TableFragment extends Fragment {
             for (int i = prevNum + 1; i <= curNum; i++) {
                 // create a new table
                 String key = tableRef.push().getKey();  // newly generated tableID
-                Table newTable = new Table(key, restaurantID, sizeTable, type + i, false, null);
+                Table newTable = new Table(key, restaurantID, sizeTable, type + i, "Open", null);
                 tableRef.child(key).setValue(newTable);
                 // add newly created tableID to listTable
                 listTable.add(key);

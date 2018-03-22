@@ -55,38 +55,21 @@ public class MainActivity extends AppCompatActivity {
         actionbar.setDisplayHomeAsUpEnabled(true);
         actionbar.setHomeAsUpIndicator(R.drawable.ic_menu);
 
-        // show the home fragment when app first launches
-        selectFragment(R.id.nav_home);
-
         mFirebaseAuth = FirebaseAuth.getInstance();
         mFirebaseUser = mFirebaseAuth.getCurrentUser();
+        loadRestaurantNameAndID(mFirebaseUser.getUid());  // Load name in drawer header and get restaurant ID
 
         Log.d(TAG, "Main activity");
         Intent intent = getIntent();
         String email = intent.getStringExtra("Email");
 
-//        btnSignOut = (Button) findViewById(R.id.btn_sign_out);
-//        btnSignOut.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                signOut();
-//            }
-//        });
-
-
         // Navigation Drawer
         mDrawerLayout = findViewById(R.id.drawer_layout);
         NavigationView navigationView = findViewById(R.id.nav_view);
-
         View navHeader = navigationView.getHeaderView(0);
         drawerName = navHeader.findViewById(R.id.drawer_name);
-
-        loadRestaurantNameAndID(mFirebaseUser.getUid());
-
         TextView drawerEmail = navHeader.findViewById(R.id.drawer_email);
         drawerEmail.setText(email);
-        // Load name in drawer header and get restaurant ID
-
 
         navigationView.setNavigationItemSelectedListener(
                 new NavigationView.OnNavigationItemSelectedListener() {
@@ -107,7 +90,9 @@ public class MainActivity extends AppCompatActivity {
                     }
                 });
 
-
+        // show the home fragment when app first launches
+        selectFragment(R.id.nav_home);
+        //selectFragment(R.id.nav_guest);
     }
 
     private void selectFragment(int menuItemID) {

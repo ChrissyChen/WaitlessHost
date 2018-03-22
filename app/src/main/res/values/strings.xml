@@ -63,6 +63,13 @@
     <string name="guests">Guests</string>
     <string name="sign_out">Sign Out</string>
 
+    <!-- Home Fragment -->
+    <string name="status_open">Open</string>
+    <string name="status_seated">Seated</string>
+    <string name="status_dirty">Dirty</string>
+    <string name="table_name">Table Name</string>
+
+
     <!-- General Fragment -->
     <string name="restaurant_name">Restaurant Name</string>
     <string name="address">Address</string>
