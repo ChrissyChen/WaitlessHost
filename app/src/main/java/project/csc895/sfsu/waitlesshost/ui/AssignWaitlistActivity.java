@@ -40,8 +40,6 @@ public class AssignWaitlistActivity extends AppCompatActivity {
     private static final String STATUS_CHILD = "status";
     private static final String NUMBER_STATUS_WAITING = "Waiting";
     private static final String NUMBER_STATUS_DINING = "Dining";
-    private static final String NUMBER_STATUS_CANCELLED = "Cancelled";
-    private static final String NUMBER_STATUS_COMPLETED = "Completed";
     private static final String TABLE_STATUS_SEATED = "Seated";
     private static final String NUMBER_ID_CHILD = "numberID";
     private static final String WAIT_NUM_TABLE_A_CHILD = "waitNumTableA";

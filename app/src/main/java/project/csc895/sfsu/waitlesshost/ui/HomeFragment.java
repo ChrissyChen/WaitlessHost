@@ -32,7 +32,6 @@ import project.csc895.sfsu.waitlesshost.R;
 import project.csc895.sfsu.waitlesshost.model.Number;
 import project.csc895.sfsu.waitlesshost.model.Restaurant;
 import project.csc895.sfsu.waitlesshost.model.Table;
-import project.csc895.sfsu.waitlesshost.ui.MainActivity;
 
 
 public class HomeFragment extends Fragment {
@@ -49,9 +48,6 @@ public class HomeFragment extends Fragment {
     private static final String TABLE_STATUS_DIRTY = "Dirty";
     private static final String STATUS_CHILD = "status";
     private static final String NUMBER_ID_CHILD = "numberID";
-    private static final String NUMBER_STATUS_WAITING = "Waiting";
-    private static final String NUMBER_STATUS_DINING = "Dining";
-    private static final String NUMBER_STATUS_CANCELLED = "Cancelled";
     private static final String NUMBER_STATUS_COMPLETED = "Completed";
     public final static String EXTRA_TABLE_SIZE = "Pass Table size";
     public final static String EXTRA_TABLE_NAME = "Pass Table name";
@@ -153,7 +149,7 @@ public class HomeFragment extends Fragment {
                 } else {
                     viewHolder.mTableNameLinearLayout.setVisibility(View.GONE);  // NEED. otherwise the separator line will get overlapped
                     viewHolder.mTableName.setVisibility(View.GONE);
-                    viewHolder.mSeparator.setVisibility(View.GONE);
+                    viewHolder.mSeparator.setVisibility(View.GONE); // NEED. otherwise has extra space
                 }
             }
         };
@@ -234,8 +230,7 @@ public class HomeFragment extends Fragment {
                     new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
-                            Toast.makeText(mActivity, "You clicked Open button", Toast.LENGTH_SHORT).show();
-                            // TODO
+                            showConfirmOpenAlertDialog(table);
                         }
                     });
         }
@@ -326,6 +321,7 @@ public class HomeFragment extends Fragment {
 
         updateTableStatus(tableID);
         updateNumberStatus(numberID);
+        Toast.makeText(mActivity, "Table is under cleaning!", Toast.LENGTH_SHORT).show();
     }
 
     private static void updateTableStatus(String tableID) {
@@ -347,6 +343,44 @@ public class HomeFragment extends Fragment {
         numberRef.child(STATUS_CHILD).setValue(NUMBER_STATUS_COMPLETED);
         Log.d(TAG, "Number status change to Completed");
     }
+
+    private static void showConfirmOpenAlertDialog(final Table table) {
+        String tableName = table.getTableName();
+        String message = "Are you sure to Open the Table " + tableName + "?";
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(mActivity);
+        builder.setMessage(message);
+        builder.setCancelable(false); // Disallow cancel of AlertDialog on click of back button and outside touch
+
+        builder.setPositiveButton("Yes",
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        openTable(table);
+                    }
+                });
+
+        builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.cancel();
+            }
+        });
+
+        AlertDialog alertDialog = builder.create();
+        alertDialog.show();
+    }
+
+    private static void openTable(Table table) {
+        String tableID = table.getTableID();
+
+        //Update Table status: from Dirty to Open
+        DatabaseReference databaseRef = FirebaseDatabase.getInstance().getReference();
+        DatabaseReference tableRef = databaseRef.child(TABLE_CHILD).child(tableID);
+        tableRef.child(STATUS_CHILD).setValue(TABLE_STATUS_OPEN);
+        Log.d(TAG, "Table status change to Open");
+        Toast.makeText(mActivity, "Table Opened!", Toast.LENGTH_SHORT).show();
+    }
+
 
     @Override
     public void onAttach(Activity activity) {
