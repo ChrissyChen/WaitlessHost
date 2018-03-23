@@ -223,9 +223,9 @@ public class AssignWaitlistActivity extends AppCompatActivity {
                 new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        //todo go back to home page, change status of table and number
+                        // go back to home page, change status of table and number, update waitlist, assign numberID
                         Toast.makeText(mActivity, "Assignment Complete!", Toast.LENGTH_SHORT).show();
-                        mActivity.onBackPressed();  // todo check?
+                        mActivity.onBackPressed();
                         updateTableStatus(numberID);
                         updateNumberStatus(numberID, numberName);
                     }

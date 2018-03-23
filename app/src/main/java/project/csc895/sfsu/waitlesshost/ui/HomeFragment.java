@@ -13,7 +13,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -33,6 +32,7 @@ import project.csc895.sfsu.waitlesshost.R;
 import project.csc895.sfsu.waitlesshost.model.Number;
 import project.csc895.sfsu.waitlesshost.model.Restaurant;
 import project.csc895.sfsu.waitlesshost.model.Table;
+import project.csc895.sfsu.waitlesshost.ui.MainActivity;
 
 
 public class HomeFragment extends Fragment {
@@ -44,9 +44,15 @@ public class HomeFragment extends Fragment {
     private static final String RESTAURANT_ID_CHILD = "restaurantID";
     private static final String NUMBER_CHILD = "numbers";
     private static final String TABLE_CHILD = "tables";
-    private static final String STATUS_OPEN = "Open";
-    private static final String STATUS_SEATED = "Seated";
-    private static final String STATUS_DIRTY = "Dirty";
+    private static final String TABLE_STATUS_OPEN = "Open";
+    private static final String TABLE_STATUS_SEATED = "Seated";
+    private static final String TABLE_STATUS_DIRTY = "Dirty";
+    private static final String STATUS_CHILD = "status";
+    private static final String NUMBER_ID_CHILD = "numberID";
+    private static final String NUMBER_STATUS_WAITING = "Waiting";
+    private static final String NUMBER_STATUS_DINING = "Dining";
+    private static final String NUMBER_STATUS_CANCELLED = "Cancelled";
+    private static final String NUMBER_STATUS_COMPLETED = "Completed";
     public final static String EXTRA_TABLE_SIZE = "Pass Table size";
     public final static String EXTRA_TABLE_NAME = "Pass Table name";
     public final static String EXTRA_TABLE_ID = "Pass Table id";
@@ -76,9 +82,7 @@ public class HomeFragment extends Fragment {
         }
 
         initViews(view);
-        showList(STATUS_OPEN, openRecyclerView);
-        showList(STATUS_SEATED, seatedRecyclerView);
-        showList(STATUS_DIRTY, dirtyRecyclerView);
+        loadTableInfo();
 
         return view;
     }
@@ -124,6 +128,12 @@ public class HomeFragment extends Fragment {
         dirtyRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
     }
 
+    private void loadTableInfo() {
+        showList(TABLE_STATUS_OPEN, openRecyclerView);
+        showList(TABLE_STATUS_SEATED, seatedRecyclerView);
+        showList(TABLE_STATUS_DIRTY, dirtyRecyclerView);
+    }
+
     private void showList(final String tableStatus, RecyclerView recyclerView) {
         Query query = mDatabase.child(TABLE_CHILD)
                 .orderByChild(RESTAURANT_ID_CHILD)
@@ -143,6 +153,7 @@ public class HomeFragment extends Fragment {
                 } else {
                     viewHolder.mTableNameLinearLayout.setVisibility(View.GONE);  // NEED. otherwise the separator line will get overlapped
                     viewHolder.mTableName.setVisibility(View.GONE);
+                    viewHolder.mSeparator.setVisibility(View.GONE);
                 }
             }
         };
@@ -152,11 +163,13 @@ public class HomeFragment extends Fragment {
     public static class TableViewHolder extends RecyclerView.ViewHolder {
         private TextView mTableName;
         private LinearLayout mTableNameLinearLayout;
+        private View mSeparator;
 
         public TableViewHolder(View itemView) {
             super(itemView);
             mTableName = (TextView) itemView.findViewById(R.id.tableName);
             mTableNameLinearLayout = (LinearLayout) itemView.findViewById(R.id.tableNameLinearLayout);
+            mSeparator = itemView.findViewById(R.id.tableSeparator);
         }
 
         public void setTableName(String tableName) {
@@ -167,20 +180,13 @@ public class HomeFragment extends Fragment {
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-//                    Context context = v.getContext();
-//                    Intent intent = new Intent(context, NumberDetailedActivity.class);
-//                    intent.putExtra(EXTRA_NUMBER_ID, number.getNumberID());// pass number id
-//                    intent.putExtra(EXTRA_RESTAURANT_ID, number.getRestaurantID());
-//                    context.startActivity(intent);
-
-                    // Alert Dialog
-                    showAlertDialog(table);
+                    showTableDetailsAlertDialog(table);
                 }
             });
         }
     }
 
-    private static void showAlertDialog(final Table table) {
+    private static void showTableDetailsAlertDialog(final Table table) {
         String tableStatus = table.getStatus();
         String numberID = table.getNumberID();
 
@@ -200,7 +206,7 @@ public class HomeFragment extends Fragment {
         builder.setView(alertLayout); // this is set the view from XML inside AlertDialog
         builder.setCancelable(false); // Disallow cancel of AlertDialog on click of back button and outside touch
 
-        if (tableStatus.equals(STATUS_OPEN)) {
+        if (tableStatus.equals(TABLE_STATUS_OPEN)) {
             builder.setPositiveButton("Assign Table",
                     new DialogInterface.OnClickListener() {
                         @Override
@@ -214,17 +220,16 @@ public class HomeFragment extends Fragment {
                         }
                     });
 
-        } else if (tableStatus.equals(STATUS_SEATED) && numberID != null) {
+        } else if (tableStatus.equals(TABLE_STATUS_SEATED) && numberID != null) {
             loadNumberInfo(alertLayout, numberID);
             builder.setPositiveButton("Clean Table",
                     new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
-                            Toast.makeText(mActivity, "You clicked Clean button", Toast.LENGTH_SHORT).show();
-                            // TODO
+                            showConfirmCleanAlertDialog(table);
                         }
                     });
-        } else if (tableStatus.equals(STATUS_DIRTY)) {
+        } else if (tableStatus.equals(TABLE_STATUS_DIRTY)) {
             builder.setPositiveButton("Open Table",
                     new DialogInterface.OnClickListener() {
                         @Override
@@ -289,6 +294,59 @@ public class HomeFragment extends Fragment {
         });
     }
 
+    private static void showConfirmCleanAlertDialog(final Table table) {
+        String tableName = table.getTableName();
+        String message = "Are you sure to clean the Table " + tableName + "?";
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(mActivity);
+        builder.setMessage(message);
+        builder.setCancelable(false); // Disallow cancel of AlertDialog on click of back button and outside touch
+
+        builder.setPositiveButton("Yes",
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        cleanTable(table);
+                    }
+                });
+
+        builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.cancel();
+            }
+        });
+
+        AlertDialog alertDialog = builder.create();
+        alertDialog.show();
+    }
+
+    private static void cleanTable(Table table) {
+        String tableID = table.getTableID();
+        String numberID = table.getNumberID();
+
+        updateTableStatus(tableID);
+        updateNumberStatus(numberID);
+    }
+
+    private static void updateTableStatus(String tableID) {
+        //Table status: from Seated to Dirty
+        //assign null to numberID child indicating no guest
+        DatabaseReference databaseRef = FirebaseDatabase.getInstance().getReference();
+        DatabaseReference tableRef = databaseRef.child(TABLE_CHILD).child(tableID);
+        tableRef.child(STATUS_CHILD).setValue(TABLE_STATUS_DIRTY);
+        Log.d(TAG, "Table status change to Dirty");
+
+        tableRef.child(NUMBER_ID_CHILD).setValue(null);
+        Log.d(TAG, "Set numberID to null");
+    }
+
+    private static void updateNumberStatus(String numberID) {
+        //Number status: from Dining to Completed
+        DatabaseReference databaseRef = FirebaseDatabase.getInstance().getReference();
+        DatabaseReference numberRef = databaseRef.child(NUMBER_CHILD).child(numberID);
+        numberRef.child(STATUS_CHILD).setValue(NUMBER_STATUS_COMPLETED);
+        Log.d(TAG, "Number status change to Completed");
+    }
 
     @Override
     public void onAttach(Activity activity) {
@@ -300,5 +358,11 @@ public class HomeFragment extends Fragment {
     public void onDetach() {
         super.onDetach();
         mActivity = null;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        loadTableInfo();  // refresh if data changes
     }
 }
