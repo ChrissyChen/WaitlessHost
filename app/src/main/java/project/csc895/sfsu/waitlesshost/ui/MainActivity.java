@@ -35,10 +35,9 @@ public class MainActivity extends AppCompatActivity {
 
     private static final String TAG = "Main Activity";
     private static final String RESTAURANT_CHILD = "restaurants";
-    private static final String MANAGER_ID_CHILD = "managerID";
+    private static final String RESTAURANT_ID_CHILD = "restaurantID";
     private static final String ARGS_RESTAURANT_ID = "restaurantID";
     private FirebaseAuth mFirebaseAuth;
-    private FirebaseUser mFirebaseUser;
     private DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
     private DrawerLayout mDrawerLayout;
     private TextView drawerName;
@@ -48,6 +47,15 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        //get email and restaurantID either from Splash Activity or Login Activity
+        Intent intent = getIntent();
+        String email = intent.getStringExtra(SplashActivity.EXTRA_EMAIL);
+        restaurantID = intent.getStringExtra(SplashActivity.EXTRA_RESTAURANT_ID);
+        Log.d(TAG + "restaurant", restaurantID);
+
+        //Get Firebase mFirebaseAuth instance
+        mFirebaseAuth = FirebaseAuth.getInstance();
+
         // set Navigation Drawer icon
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -55,19 +63,14 @@ public class MainActivity extends AppCompatActivity {
         actionbar.setDisplayHomeAsUpEnabled(true);
         actionbar.setHomeAsUpIndicator(R.drawable.ic_menu);
 
-        mFirebaseAuth = FirebaseAuth.getInstance();
-        mFirebaseUser = mFirebaseAuth.getCurrentUser();
-        loadRestaurantNameAndID(mFirebaseUser.getUid());  // Load name in drawer header and get restaurant ID
-
-        Log.d(TAG, "Main activity");
-        Intent intent = getIntent();
-        String email = intent.getStringExtra("Email");
-
         // Navigation Drawer
         mDrawerLayout = findViewById(R.id.drawer_layout);
         NavigationView navigationView = findViewById(R.id.nav_view);
         View navHeader = navigationView.getHeaderView(0);
+
         drawerName = navHeader.findViewById(R.id.drawer_name);
+        loadRestaurantNameWithID();  // Load name in drawer header
+
         TextView drawerEmail = navHeader.findViewById(R.id.drawer_email);
         drawerEmail.setText(email);
 
@@ -92,7 +95,6 @@ public class MainActivity extends AppCompatActivity {
 
         // show the home fragment when app first launches
         selectFragment(R.id.nav_home);
-        //selectFragment(R.id.nav_guest);
     }
 
     private void selectFragment(int menuItemID) {
@@ -170,10 +172,10 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    private void loadRestaurantNameAndID(String managerID) {
+    private void loadRestaurantNameWithID() {
         Query query = mDatabase.child(RESTAURANT_CHILD)
-                .orderByChild(MANAGER_ID_CHILD)
-                .equalTo(managerID);
+                .orderByChild(RESTAURANT_ID_CHILD)
+                .equalTo(restaurantID);
 
         query.addValueEventListener(new ValueEventListener() {
             @Override
@@ -183,16 +185,11 @@ public class MainActivity extends AppCompatActivity {
                     Log.d(TAG, "NO RESULT FOUND!");
                 } else {
                     for (DataSnapshot objSnapshot: dataSnapshot.getChildren()) {
-                        //restaurantID = objSnapshot.getKey();
-
                         Restaurant restaurant = objSnapshot.getValue(Restaurant.class);
                         if (restaurant != null) {
-                            restaurantID = restaurant.getRestaurantID();
                             String name = restaurant.getName();
                             drawerName.setText(name);
-                            // another way to get restaurantID: restaurant.getRestaurantID();
                         }
-
                     }
                 }
             }

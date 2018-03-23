@@ -19,8 +19,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -30,7 +28,6 @@ import com.google.firebase.database.ValueEventListener;
 
 import project.csc895.sfsu.waitlesshost.R;
 import project.csc895.sfsu.waitlesshost.model.Number;
-import project.csc895.sfsu.waitlesshost.model.Restaurant;
 import project.csc895.sfsu.waitlesshost.model.Table;
 
 
@@ -38,8 +35,6 @@ public class HomeFragment extends Fragment {
 
     private static final String TAG = "Home Fragment";
     private static final String ARGS_RESTAURANT_ID = "restaurantID";
-    private static final String RESTAURANT_CHILD = "restaurants";
-    private static final String MANAGER_ID_CHILD = "managerID";
     private static final String RESTAURANT_ID_CHILD = "restaurantID";
     private static final String NUMBER_CHILD = "numbers";
     private static final String TABLE_CHILD = "tables";
@@ -63,55 +58,15 @@ public class HomeFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_home, container, false);
 
-//        // Retrieve data from main activity // !!! problem: sometime can't load restaurantID because of poor internet!!!
-//        Bundle args = getArguments();
-//        restaurantID = args.getString(ARGS_RESTAURANT_ID);
-//        Log.d("restaurantID", restaurantID);
-
+        // Retrieve data from main activity
         Bundle args = getArguments();
-        if (args != null) {
-            restaurantID = args.getString(ARGS_RESTAURANT_ID);
-        } else {
-            FirebaseAuth mFirebaseAuth = FirebaseAuth.getInstance();
-            FirebaseUser mFirebaseUser = mFirebaseAuth.getCurrentUser();
-            loadRestaurantID(mFirebaseUser.getUid());
-        }
+        restaurantID = args.getString(ARGS_RESTAURANT_ID);
+        Log.d("restaurantID", restaurantID);
 
         initViews(view);
         loadTableInfo();
 
         return view;
-    }
-
-    private void loadRestaurantID(String managerID) {
-        Query query = mDatabase.child(RESTAURANT_CHILD)
-                .orderByChild(MANAGER_ID_CHILD)
-                .equalTo(managerID);
-
-        query.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                // show no result view
-                if (!dataSnapshot.hasChildren()) {
-                    Log.d(TAG, "NO RESULT FOUND!");
-                } else {
-                    for (DataSnapshot objSnapshot : dataSnapshot.getChildren()) {
-                        //restaurantID = objSnapshot.getKey();
-
-                        Restaurant restaurant = objSnapshot.getValue(Restaurant.class);
-                        if (restaurant != null) {
-                            restaurantID = restaurant.getRestaurantID();
-                        }
-
-                    }
-                }
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });
     }
 
     private void initViews(View view) {
