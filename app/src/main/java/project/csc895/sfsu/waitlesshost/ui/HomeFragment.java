@@ -47,7 +47,7 @@ public class HomeFragment extends Fragment {
     private static final String STATUS_OPEN = "Open";
     private static final String STATUS_SEATED = "Seated";
     private static final String STATUS_DIRTY = "Dirty";
-    public final static String EXTRA_NUMBER_ID = "Pass Number id";
+    public final static String EXTRA_TABLE_SIZE = "Pass Table size";
     public final static String EXTRA_RESTAURANT_ID = "Pass Restaurant id";
     private String restaurantID;
     private RecyclerView openRecyclerView, seatedRecyclerView, dirtyRecyclerView;
@@ -206,6 +206,7 @@ public class HomeFragment extends Fragment {
                             //Toast.makeText(mActivity, "You clicked Assign button", Toast.LENGTH_SHORT).show();
                             Intent intent = new Intent(mActivity, AssignWaitlistActivity.class);
                             intent.putExtra(EXTRA_RESTAURANT_ID, table.getRestaurantID());
+                            intent.putExtra(EXTRA_TABLE_SIZE, table.getTableSize());
                             mActivity.startActivity(intent);
                         }
                     });
@@ -217,6 +218,7 @@ public class HomeFragment extends Fragment {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
                             Toast.makeText(mActivity, "You clicked Clean button", Toast.LENGTH_SHORT).show();
+                            // TODO
                         }
                     });
         } else if (tableStatus.equals(STATUS_DIRTY)) {
@@ -225,6 +227,7 @@ public class HomeFragment extends Fragment {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
                             Toast.makeText(mActivity, "You clicked Open button", Toast.LENGTH_SHORT).show();
+                            // TODO
                         }
                     });
         }
@@ -237,59 +240,6 @@ public class HomeFragment extends Fragment {
 
         AlertDialog alertDialog = builder.create();
         alertDialog.show();
-    }
-
-    private static void initAlertDialogLayout(View alertLayout, Table table) {
-        String tableStatus = table.getStatus();
-        String numberID = table.getNumberID();
-
-        TextView tableNameField = alertLayout.findViewById(R.id.tableName);
-        TextView tableSizeField = alertLayout.findViewById(R.id.tableSize);
-        TextView tableStatusField = alertLayout.findViewById(R.id.tableStatus);
-
-//        Button openButton = alertLayout.findViewById(R.id.openButton);
-//        Button seatedButton = alertLayout.findViewById(R.id.seatedButton);
-//        Button dirtyButton = alertLayout.findViewById(R.id.dirtyButton);
-//        openButton.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                Toast.makeText(mActivity, "You clicked Open button", Toast.LENGTH_SHORT).show();
-//            }
-//        });
-//        seatedButton.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                Toast.makeText(mActivity, "You clicked Seated button", Toast.LENGTH_SHORT).show();
-//            }
-//        });
-//        dirtyButton.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                Toast.makeText(mActivity, "You clicked Dirty button", Toast.LENGTH_SHORT).show();
-//            }
-//        });
-
-        String displayName = "Table " + table.getTableName();
-        tableNameField.setText(displayName);
-        tableSizeField.setText(String.valueOf(table.getTableSize()));
-        tableStatusField.setText(tableStatus);
-
-//        if (tableStatus.equals(STATUS_OPEN)) {
-//            openButton.setVisibility(View.GONE);
-//            seatedButton.setVisibility(View.VISIBLE);
-//            dirtyButton.setVisibility(View.GONE);
-//
-//        } else if (tableStatus.equals(STATUS_SEATED) && numberID != null) {
-//            openButton.setVisibility(View.GONE);
-//            seatedButton.setVisibility(View.GONE);
-//            dirtyButton.setVisibility(View.VISIBLE);
-//            loadNumberInfo(alertLayout, numberID);
-//
-//        } else if (tableStatus.equals(STATUS_DIRTY)) {
-//            openButton.setVisibility(View.VISIBLE);
-//            seatedButton.setVisibility(View.GONE);
-//            dirtyButton.setVisibility(View.GONE);
-//        }
     }
 
     private static void loadNumberInfo(View alertLayout, String numberID) {
