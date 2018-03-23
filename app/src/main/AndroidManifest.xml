@@ -43,7 +43,10 @@
             android:name=".ui.RestaurantGetNumberActivity"
             android:label="@string/restaurant_get_number"
             android:theme="@style/AppTheme"/>
-
+        <activity
+            android:name=".ui.AssignWaitlistActivity"
+            android:label="@string/assign_waitlist"
+            android:theme="@style/AppTheme"/>
     </application>
 
 </manifest>

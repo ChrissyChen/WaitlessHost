@@ -68,6 +68,17 @@
     <string name="status_seated">Seated</string>
     <string name="status_dirty">Dirty</string>
     <string name="table_name">Table Name</string>
+    <string name="table_detail">Table Details</string>
+    <string name="table_size">Table Size</string>
+    <string name="change_to_open">Open Table</string>
+    <string name="change_to_seated">Assign Guests</string>
+    <string name="change_to_dirty">Clean Table</string>
+
+    <!-- Assign Waitlist Activity -->
+    <string name="assign_waitlist">Assign Waitlist</string>
+    <string name="current_guest">Current Waiting Guests</string>
+    <string name="subtitle">(Party size no larger than Table Size)</string>
+
 
 
     <!-- General Fragment -->

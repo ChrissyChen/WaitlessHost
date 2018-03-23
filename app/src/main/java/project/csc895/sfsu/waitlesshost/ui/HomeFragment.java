@@ -1,16 +1,23 @@
 package project.csc895.sfsu.waitlesshost.ui;
 
+import android.app.Activity;
 import android.app.Fragment;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.google.firebase.auth.FirebaseAuth;
@@ -23,6 +30,7 @@ import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
 import project.csc895.sfsu.waitlesshost.R;
+import project.csc895.sfsu.waitlesshost.model.Number;
 import project.csc895.sfsu.waitlesshost.model.Restaurant;
 import project.csc895.sfsu.waitlesshost.model.Table;
 
@@ -44,6 +52,7 @@ public class HomeFragment extends Fragment {
     private String restaurantID;
     private RecyclerView openRecyclerView, seatedRecyclerView, dirtyRecyclerView;
     private DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
+    private static Activity mActivity;
 
     @Nullable
     @Override
@@ -84,7 +93,7 @@ public class HomeFragment extends Fragment {
                 if (!dataSnapshot.hasChildren()) {
                     Log.d(TAG, "NO RESULT FOUND!");
                 } else {
-                    for (DataSnapshot objSnapshot: dataSnapshot.getChildren()) {
+                    for (DataSnapshot objSnapshot : dataSnapshot.getChildren()) {
                         //restaurantID = objSnapshot.getKey();
 
                         Restaurant restaurant = objSnapshot.getValue(Restaurant.class);
@@ -145,7 +154,7 @@ public class HomeFragment extends Fragment {
         public TableViewHolder(View itemView) {
             super(itemView);
             mTableName = (TextView) itemView.findViewById(R.id.tableName);
-            mTableNameLinearLayout = (LinearLayout)itemView.findViewById(R.id.tableNameLinearLayout);
+            mTableNameLinearLayout = (LinearLayout) itemView.findViewById(R.id.tableNameLinearLayout);
         }
 
         public void setTableName(String tableName) {
@@ -163,8 +172,180 @@ public class HomeFragment extends Fragment {
 //                    context.startActivity(intent);
 
                     // Alert Dialog
+                    showAlertDialog(table);
                 }
             });
         }
+    }
+
+    private static void showAlertDialog(final Table table) {
+        String tableStatus = table.getStatus();
+        String numberID = table.getNumberID();
+
+        LayoutInflater inflater = mActivity.getLayoutInflater();
+        View alertLayout = inflater.inflate(R.layout.alert_dialog_table, null);
+
+        TextView tableNameField = alertLayout.findViewById(R.id.tableName);
+        TextView tableSizeField = alertLayout.findViewById(R.id.tableSize);
+        TextView tableStatusField = alertLayout.findViewById(R.id.tableStatus);
+
+        String displayName = "Table " + table.getTableName();
+        tableNameField.setText(displayName);
+        tableSizeField.setText(String.valueOf(table.getTableSize()));
+        tableStatusField.setText(tableStatus);
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(mActivity);
+        builder.setView(alertLayout); // this is set the view from XML inside AlertDialog
+        builder.setCancelable(false); // Disallow cancel of AlertDialog on click of back button and outside touch
+
+        if (tableStatus.equals(STATUS_OPEN)) {
+            builder.setPositiveButton("Assign Table",
+                    new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            //Toast.makeText(mActivity, "You clicked Assign button", Toast.LENGTH_SHORT).show();
+                            Intent intent = new Intent(mActivity, AssignWaitlistActivity.class);
+                            intent.putExtra(EXTRA_RESTAURANT_ID, table.getRestaurantID());
+                            mActivity.startActivity(intent);
+                        }
+                    });
+
+        } else if (tableStatus.equals(STATUS_SEATED) && numberID != null) {
+            loadNumberInfo(alertLayout, numberID);
+            builder.setPositiveButton("Clean Table",
+                    new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            Toast.makeText(mActivity, "You clicked Clean button", Toast.LENGTH_SHORT).show();
+                        }
+                    });
+        } else if (tableStatus.equals(STATUS_DIRTY)) {
+            builder.setPositiveButton("Open Table",
+                    new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            Toast.makeText(mActivity, "You clicked Open button", Toast.LENGTH_SHORT).show();
+                        }
+                    });
+        }
+
+        builder.setNeutralButton("Cancel", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+                // dismiss the alert dialog autoly
+            }
+        });
+
+        AlertDialog alertDialog = builder.create();
+        alertDialog.show();
+    }
+
+    private static void initAlertDialogLayout(View alertLayout, Table table) {
+        String tableStatus = table.getStatus();
+        String numberID = table.getNumberID();
+
+        TextView tableNameField = alertLayout.findViewById(R.id.tableName);
+        TextView tableSizeField = alertLayout.findViewById(R.id.tableSize);
+        TextView tableStatusField = alertLayout.findViewById(R.id.tableStatus);
+
+//        Button openButton = alertLayout.findViewById(R.id.openButton);
+//        Button seatedButton = alertLayout.findViewById(R.id.seatedButton);
+//        Button dirtyButton = alertLayout.findViewById(R.id.dirtyButton);
+//        openButton.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                Toast.makeText(mActivity, "You clicked Open button", Toast.LENGTH_SHORT).show();
+//            }
+//        });
+//        seatedButton.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                Toast.makeText(mActivity, "You clicked Seated button", Toast.LENGTH_SHORT).show();
+//            }
+//        });
+//        dirtyButton.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                Toast.makeText(mActivity, "You clicked Dirty button", Toast.LENGTH_SHORT).show();
+//            }
+//        });
+
+        String displayName = "Table " + table.getTableName();
+        tableNameField.setText(displayName);
+        tableSizeField.setText(String.valueOf(table.getTableSize()));
+        tableStatusField.setText(tableStatus);
+
+//        if (tableStatus.equals(STATUS_OPEN)) {
+//            openButton.setVisibility(View.GONE);
+//            seatedButton.setVisibility(View.VISIBLE);
+//            dirtyButton.setVisibility(View.GONE);
+//
+//        } else if (tableStatus.equals(STATUS_SEATED) && numberID != null) {
+//            openButton.setVisibility(View.GONE);
+//            seatedButton.setVisibility(View.GONE);
+//            dirtyButton.setVisibility(View.VISIBLE);
+//            loadNumberInfo(alertLayout, numberID);
+//
+//        } else if (tableStatus.equals(STATUS_DIRTY)) {
+//            openButton.setVisibility(View.VISIBLE);
+//            seatedButton.setVisibility(View.GONE);
+//            dirtyButton.setVisibility(View.GONE);
+//        }
+    }
+
+    private static void loadNumberInfo(View alertLayout, String numberID) {
+        ImageView numberIcon = alertLayout.findViewById(R.id.numberIcon);
+        ImageView customerIcon = alertLayout.findViewById(R.id.customerIcon);
+        ImageView phoneIcon = alertLayout.findViewById(R.id.phoneIcon);
+        ImageView partyIcon = alertLayout.findViewById(R.id.partyIcon);
+
+        final TextView numberNameField = alertLayout.findViewById(R.id.numberName);
+        final TextView customerNameField = alertLayout.findViewById(R.id.customerName);
+        final TextView customerTelField = alertLayout.findViewById(R.id.customerTelephone);
+        final TextView partyNumberField = alertLayout.findViewById(R.id.customerPartyNumber);
+
+        numberIcon.setVisibility(View.VISIBLE);
+        customerIcon.setVisibility(View.VISIBLE);
+        phoneIcon.setVisibility(View.VISIBLE);
+        partyIcon.setVisibility(View.VISIBLE);
+        numberNameField.setVisibility(View.VISIBLE);
+        customerNameField.setVisibility(View.VISIBLE);
+        customerTelField.setVisibility(View.VISIBLE);
+        partyNumberField.setVisibility(View.VISIBLE);
+
+        //load customer info in Number child
+        DatabaseReference ref = FirebaseDatabase.getInstance().getReference();
+        DatabaseReference numberRef = ref.child(NUMBER_CHILD).child(numberID);
+
+        numberRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                Number number = dataSnapshot.getValue(Number.class);
+                if (number != null) {
+                    String numberName = "Number " + number.getNumberName();
+                    numberNameField.setText(numberName);
+                    customerNameField.setText(number.getUsername());
+                    customerTelField.setText(number.getPhone());
+                    partyNumberField.setText(String.valueOf(number.getPartyNumber()));
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+    }
+
+
+    @Override
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+        mActivity = activity;
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        mActivity = null;
     }
 }
