@@ -48,6 +48,8 @@ public class HomeFragment extends Fragment {
     private static final String STATUS_SEATED = "Seated";
     private static final String STATUS_DIRTY = "Dirty";
     public final static String EXTRA_TABLE_SIZE = "Pass Table size";
+    public final static String EXTRA_TABLE_NAME = "Pass Table name";
+    public final static String EXTRA_TABLE_ID = "Pass Table id";
     public final static String EXTRA_RESTAURANT_ID = "Pass Restaurant id";
     private String restaurantID;
     private RecyclerView openRecyclerView, seatedRecyclerView, dirtyRecyclerView;
@@ -203,10 +205,11 @@ public class HomeFragment extends Fragment {
                     new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
-                            //Toast.makeText(mActivity, "You clicked Assign button", Toast.LENGTH_SHORT).show();
                             Intent intent = new Intent(mActivity, AssignWaitlistActivity.class);
                             intent.putExtra(EXTRA_RESTAURANT_ID, table.getRestaurantID());
                             intent.putExtra(EXTRA_TABLE_SIZE, table.getTableSize());
+                            intent.putExtra(EXTRA_TABLE_ID, table.getTableID());
+                            intent.putExtra(EXTRA_TABLE_NAME, table.getTableName());
                             mActivity.startActivity(intent);
                         }
                     });
