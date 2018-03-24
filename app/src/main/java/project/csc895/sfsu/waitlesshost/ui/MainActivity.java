@@ -51,7 +51,7 @@ public class MainActivity extends AppCompatActivity {
         Intent intent = getIntent();
         String email = intent.getStringExtra(SplashActivity.EXTRA_EMAIL);
         restaurantID = intent.getStringExtra(SplashActivity.EXTRA_RESTAURANT_ID);
-        Log.d(TAG + "restaurant", restaurantID);
+        Log.d(TAG + "restaurant", restaurantID);// sometimes null. todo load id here
 
         //Get Firebase mFirebaseAuth instance
         mFirebaseAuth = FirebaseAuth.getInstance();

@@ -42,6 +42,7 @@ public class AssignWaitlistActivity extends AppCompatActivity {
     private static final String NUMBER_STATUS_DINING = "Dining";
     private static final String TABLE_STATUS_SEATED = "Seated";
     private static final String NUMBER_ID_CHILD = "numberID";
+    private static final String TABLE_ID_CHILD = "tableID";
     private static final String WAIT_NUM_TABLE_A_CHILD = "waitNumTableA";
     private static final String WAIT_NUM_TABLE_B_CHILD = "waitNumTableB";
     private static final String WAIT_NUM_TABLE_C_CHILD = "waitNumTableC";
@@ -142,26 +143,26 @@ public class AssignWaitlistActivity extends AppCompatActivity {
         };
         mRecyclerView.setAdapter(adapter);
 
-        query.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                // show no result view
-                if (!dataSnapshot.hasChildren()) {
-                    mRecyclerView.setVisibility(View.GONE);
-                    mNoRecordTextView.setVisibility(View.VISIBLE);
-                    Log.d(TAG, "NO RECORD SHOWS");
-                } else {
-                    mRecyclerView.setVisibility(View.VISIBLE);
-                    mNoRecordTextView.setVisibility(View.GONE);
-                    Log.d(TAG, "RESULT VIEW SHOWS");
-                }
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });
+//        query.addValueEventListener(new ValueEventListener() {
+//            @Override
+//            public void onDataChange(DataSnapshot dataSnapshot) {
+//                // show no result view
+//                if (!dataSnapshot.hasChildren()) {
+//                    mRecyclerView.setVisibility(View.GONE);
+//                    mNoRecordTextView.setVisibility(View.VISIBLE);
+//                    Log.d(TAG, "NO RECORD SHOWS");
+//                } else {
+//                    mRecyclerView.setVisibility(View.VISIBLE);
+//                    mNoRecordTextView.setVisibility(View.GONE);
+//                    Log.d(TAG, "RESULT VIEW SHOWS");
+//                }
+//            }
+//
+//            @Override
+//            public void onCancelled(DatabaseError databaseError) {
+//
+//            }
+//        });
     }
 
     public static class WaitingNumberViewHolder extends RecyclerView.ViewHolder {
@@ -253,11 +254,15 @@ public class AssignWaitlistActivity extends AppCompatActivity {
 
     private static void updateNumberStatus(String numberID, String numberName) {
         //Number status: from Waiting to Dining
+        //Number's tableID set from null to tableID
         //update waitlist info
         DatabaseReference databaseRef = FirebaseDatabase.getInstance().getReference();
         DatabaseReference numberRef = databaseRef.child(NUMBER_CHILD).child(numberID);
         numberRef.child(STATUS_CHILD).setValue(NUMBER_STATUS_DINING);
         Log.d(TAG, "Number status change to Dining");
+
+        numberRef.child(TABLE_ID_CHILD).setValue(tableID);
+        Log.d(TAG, "Number tableID is set");
 
         updateWaitlistInfoWhenDining(numberName);
         Log.d(TAG, "Update waitlist wait num");
