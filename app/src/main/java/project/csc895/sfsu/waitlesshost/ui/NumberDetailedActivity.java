@@ -4,23 +4,15 @@ package project.csc895.sfsu.waitlesshost.ui;
  * Created by Chrissy on 3/20/18.
  */
 
-import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
-import android.view.Gravity;
-import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup.LayoutParams;
 import android.widget.Button;
-import android.widget.LinearLayout;
-import android.widget.PopupWindow;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -33,29 +25,35 @@ import com.google.firebase.database.ValueEventListener;
 
 import project.csc895.sfsu.waitlesshost.R;
 import project.csc895.sfsu.waitlesshost.model.Number;
+import project.csc895.sfsu.waitlesshost.model.Table;
 import project.csc895.sfsu.waitlesshost.model.Waitlist;
 
 public class NumberDetailedActivity extends AppCompatActivity {
 
     private static final String NUMBER_CHILD = "numbers";
     private static final String WAITLIST_CHILD = "waitlists";
+    private static final String TABLE_CHILD = "tables";
+    private static final String TABLE_ID_CHILD = "tableID";
+    private static final String NUMBER_ID_CHILD = "numberID";
     private static final String RESTAURANT_ID_CHILD = "restaurantID";
     private static final String STATUS_CHILD = "status";
-    private static final String STATUS_WAITING = "Waiting";
-    private static final String STATUS_DINING = "Dining";
-    private static final String STATUS_CANCELLED = "Cancelled";
-    private static final String STATUS_COMPLETED = "Completed";
+    private static final String NUMBER_STATUS_WAITING = "Waiting";
+    private static final String NUMBER_STATUS_DINING = "Dining";
+    private static final String NUMBER_STATUS_CANCELLED = "Cancelled";
+    private static final String NUMBER_STATUS_COMPLETED = "Completed";
+    private static final String TABLE_STATUS_DIRTY = "Dirty";
     private static final String WAIT_NUM_TABLE_A_CHILD = "waitNumTableA";
     private static final String WAIT_NUM_TABLE_B_CHILD = "waitNumTableB";
     private static final String WAIT_NUM_TABLE_C_CHILD = "waitNumTableC";
     private static final String WAIT_NUM_TABLE_D_CHILD = "waitNumTableD";
-    private LinearLayout mLinearLayout;
     private TextView numberNameField, statusField, customerName, customerPhone, partyNumber, createdTime;
     private Button completeButton, cancelButton, waitButton;
     private DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
-    private String numberID, restaurantID, waitlistID;
+    private String numberID, restaurantID, waitlistID, tableID;
     private String numberName;
     private int waitNumTableA, waitNumTableB, waitNumTableC, waitNumTableD;
+    private ImageView tableIcon;
+    private TextView tableNameField;
 
 
     @Override
@@ -75,7 +73,6 @@ public class NumberDetailedActivity extends AppCompatActivity {
     }
 
     private void initViews() {
-        mLinearLayout = (LinearLayout) findViewById(R.id.numberDetailLinearLayout);
         numberNameField = (TextView) findViewById(R.id.number);
         statusField = (TextView) findViewById(R.id.status);
         customerName = (TextView) findViewById(R.id.customerName);
@@ -83,27 +80,28 @@ public class NumberDetailedActivity extends AppCompatActivity {
         partyNumber = (TextView) findViewById(R.id.customerPartyNumber);
         createdTime = (TextView) findViewById(R.id.numberCreatedTime);
 
+        tableIcon = (ImageView) findViewById(R.id.tableIcon);
+        tableNameField = (TextView) findViewById(R.id.tableName);
+
         completeButton = (Button) findViewById(R.id.completeButton);
         cancelButton = (Button) findViewById(R.id.cancelButton);
         waitButton = (Button) findViewById(R.id.waitButton);
         completeButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // TODO popup window and trigger table to be available
+                showConfirmCompleteAlertDialog();
             }
         });
         cancelButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // popup window and trigger cancel the number
-                showCancelPopupWindow();
+                showConfirmCancelAlertDialog();
             }
         });
         waitButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // popup window and trigger change status to waiting, numWait +1
-                showWaitPopupWindow();
+                showConfirmWaitAlertDialog();
             }
         });
     }
@@ -117,6 +115,7 @@ public class NumberDetailedActivity extends AppCompatActivity {
                 Number number = dataSnapshot.getValue(Number.class);
                 if (number != null) {
                     String status = number.getStatus();
+                    tableID = number.getTableID();  // get tableID
                     numberName = number.getNumberName();
 
                     numberNameField.setText(numberName);
@@ -126,22 +125,31 @@ public class NumberDetailedActivity extends AppCompatActivity {
                     partyNumber.setText(String.valueOf(number.getPartyNumber()));
                     createdTime.setText(number.getTimeCreated());
 
-                    if (status.equals(STATUS_WAITING)) {         //show cancel button. hide other buttons
+                    if (status.equals(NUMBER_STATUS_WAITING)) {         //show cancel button. hide other buttons
                         cancelButton.setVisibility(View.VISIBLE);
                         completeButton.setVisibility(View.GONE);
                         waitButton.setVisibility(View.GONE);
-                    } else if (status.equals(STATUS_DINING)) {   // show complete button. hide other buttons
+                    } else if (status.equals(NUMBER_STATUS_DINING)) {   // show complete button. hide other buttons
                         completeButton.setVisibility(View.VISIBLE);
                         cancelButton.setVisibility(View.GONE);
                         waitButton.setVisibility(View.GONE);
-                    } else if (status.equals(STATUS_CANCELLED)) { // show wait button. hide other buttons
+                    } else if (status.equals(NUMBER_STATUS_CANCELLED)) { // show wait button. hide other buttons
                         waitButton.setVisibility(View.VISIBLE);
                         completeButton.setVisibility(View.GONE);
                         cancelButton.setVisibility(View.GONE);
-                    } else if (status.equals(STATUS_COMPLETED)) {   // hide all buttons
+                    } else if (status.equals(NUMBER_STATUS_COMPLETED)) {   // hide all buttons
                         completeButton.setVisibility(View.GONE);
                         cancelButton.setVisibility(View.GONE);
                         waitButton.setVisibility(View.GONE);
+                    }
+
+                    if (tableID != null) {
+                        tableIcon.setVisibility(View.VISIBLE);
+                        tableNameField.setVisibility(View.VISIBLE);
+                        loadTableName();
+                    } else {
+                        tableIcon.setVisibility(View.GONE);
+                        tableNameField.setVisibility(View.GONE);
                     }
                 }
             }
@@ -186,34 +194,29 @@ public class NumberDetailedActivity extends AppCompatActivity {
     }
 
     /* Cancel a number */
-    private void showCancelPopupWindow() {
-        LayoutInflater inflater = (LayoutInflater) NumberDetailedActivity.this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        if (inflater != null) {
-            View customView = inflater.inflate(R.layout.popup_window_cancel, null);
-            final PopupWindow popupWindow = new PopupWindow(customView, LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT);
-//            popupWindow.setOutsideTouchable(true);
-//            popupWindow.setFocusable(true);
-//            popupWindow.setElevation(10);
-//            popupWindow.setBackgroundDrawable(new ColorDrawable(Color.WHITE));
-            popupWindow.showAtLocation(mLinearLayout, Gravity.CENTER, 0, 0);
+    private void showConfirmCancelAlertDialog() {
+        String message = "Add the number to the Cancel list?";
 
-            Button yesButton = (Button) customView.findViewById(R.id.yesButton);
-            Button noButton = (Button) customView.findViewById(R.id.noButton);
-            yesButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    cancelNumber();
-                    popupWindow.dismiss();
+        AlertDialog.Builder builder = new AlertDialog.Builder(NumberDetailedActivity.this);
+        builder.setMessage(message);
+        builder.setCancelable(false); // Disallow cancel of AlertDialog on click of back button and outside touch
 
-                }
-            });
-            noButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    popupWindow.dismiss();
-                }
-            });
-        }
+        builder.setPositiveButton("Yes",
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        cancelNumber();
+                    }
+                });
+
+        builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.cancel();
+            }
+        });
+
+        AlertDialog alertDialog = builder.create();
+        alertDialog.show();
     }
 
     private void cancelNumber() {
@@ -221,7 +224,7 @@ public class NumberDetailedActivity extends AppCompatActivity {
         //waitNumTable -1
         //toast
         DatabaseReference numberRef = mDatabase.child(NUMBER_CHILD).child(numberID);
-        numberRef.child(STATUS_CHILD).setValue(STATUS_CANCELLED);
+        numberRef.child(STATUS_CHILD).setValue(NUMBER_STATUS_CANCELLED);
 
         updateWaitlistInfoWhenCancel();
         Toast.makeText(NumberDetailedActivity.this, getString(R.string.cancel_succeed), Toast.LENGTH_SHORT).show();
@@ -244,36 +247,30 @@ public class NumberDetailedActivity extends AppCompatActivity {
         }
     }
 
-
     /* Add a number back to the waiting list */
-    private void showWaitPopupWindow() {
-        LayoutInflater inflater = (LayoutInflater) NumberDetailedActivity.this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        if (inflater != null) {
-            View customView = inflater.inflate(R.layout.popup_window_wait, null);
-            final PopupWindow popupWindow = new PopupWindow(customView, LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT);
-//            popupWindow.setOutsideTouchable(false);
-//            popupWindow.setFocusable(true);
-//            popupWindow.setElevation(8);
-//            popupWindow.setBackgroundDrawable(new ColorDrawable(Color.BLACK));
-            popupWindow.showAtLocation(mLinearLayout, Gravity.CENTER, 0, 0);
+    private void showConfirmWaitAlertDialog() {
+        String message = "Add the number back to the Waiting list?";
 
-            Button yesButton = (Button) customView.findViewById(R.id.yesButton);
-            Button noButton = (Button) customView.findViewById(R.id.noButton);
-            yesButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    addNumberBackToWaitingList();
-                    popupWindow.dismiss();
+        AlertDialog.Builder builder = new AlertDialog.Builder(NumberDetailedActivity.this);
+        builder.setMessage(message);
+        builder.setCancelable(false); // Disallow cancel of AlertDialog on click of back button and outside touch
 
-                }
-            });
-            noButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    popupWindow.dismiss();
-                }
-            });
-        }
+        builder.setPositiveButton("Yes",
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        addNumberBackToWaitingList();
+                    }
+                });
+
+        builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.cancel();
+            }
+        });
+
+        AlertDialog alertDialog = builder.create();
+        alertDialog.show();
     }
 
     private void addNumberBackToWaitingList() {
@@ -281,7 +278,7 @@ public class NumberDetailedActivity extends AppCompatActivity {
         //waitNumTable +1
         //toast
         DatabaseReference numberRef = mDatabase.child(NUMBER_CHILD).child(numberID);
-        numberRef.child(STATUS_CHILD).setValue(STATUS_WAITING);
+        numberRef.child(STATUS_CHILD).setValue(NUMBER_STATUS_WAITING);
 
         updateWaitlistInfoWhenWait();
         Toast.makeText(NumberDetailedActivity.this, getString(R.string.wait_succeed), Toast.LENGTH_LONG).show();
@@ -304,6 +301,68 @@ public class NumberDetailedActivity extends AppCompatActivity {
         }
     }
 
+    /* show more info when number is dining status */
+    private void loadTableName() {
+        DatabaseReference ref = mDatabase.child(TABLE_CHILD).child(tableID);
+
+        ref.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                Table table = dataSnapshot.getValue(Table.class);
+                if (table != null) {
+                    String displayTableName = "Table " + table.getTableName();
+                    tableNameField.setText(displayTableName);
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+    }
+
+    /* Complete a number */
+    private void showConfirmCompleteAlertDialog() {
+        String message = "Add the number to Completed list?";
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(NumberDetailedActivity.this);
+        builder.setMessage(message);
+        builder.setCancelable(false); // Disallow cancel of AlertDialog on click of back button and outside touch
+
+        builder.setPositiveButton("Yes",
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        completeNumber();
+                    }
+                });
+
+        builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.cancel();
+            }
+        });
+
+        AlertDialog alertDialog = builder.create();
+        alertDialog.show();
+    }
+
+    private void completeNumber() {
+        //Update Table status: from Seated to Dirty
+        //set table's numberID to null
+        DatabaseReference tableRef = mDatabase.child(TABLE_CHILD).child(tableID);
+        tableRef.child(STATUS_CHILD).setValue(TABLE_STATUS_DIRTY);
+        tableRef.child(NUMBER_ID_CHILD).setValue(null);
+
+        //Update Number status: from Dining to Completed
+        //set number's tableID to null
+        DatabaseReference numberRef = mDatabase.child(NUMBER_CHILD).child(numberID);
+        numberRef.child(STATUS_CHILD).setValue(NUMBER_STATUS_COMPLETED);
+        numberRef.child(TABLE_ID_CHILD).setValue(null);
+
+        Toast.makeText(NumberDetailedActivity.this, "Number Completed and Table is under cleaning!", Toast.LENGTH_LONG).show();
+    }
 
     @Override
     public void onBackPressed() {

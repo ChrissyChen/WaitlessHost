@@ -79,8 +79,6 @@
     <string name="current_guest">Current Waiting Guests</string>
     <string name="subtitle">(Party size no larger than Table Size)</string>
 
-
-
     <!-- General Fragment -->
     <string name="restaurant_name">Restaurant Name</string>
     <string name="address">Address</string>
