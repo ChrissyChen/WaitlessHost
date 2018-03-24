@@ -56,10 +56,10 @@ public class GuestFragment extends Fragment {
         Log.d("restaurantID", restaurantID);
 
         initViews(view);
-        showWaitingList();
-        showDiningList();
-        showCancelledList();
-        showCompletedList();
+        showList(STATUS_WAITING, waitingRecyclerView);
+        showList(STATUS_DINING, diningRecyclerView);
+        showList(STATUS_CANCELLED, cancelledRecyclerView);
+        showList(STATUS_COMPLETED, completedRecyclerView);
 
         return view;
     }
@@ -88,7 +88,7 @@ public class GuestFragment extends Fragment {
         completedRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
     }
 
-    private void showWaitingList() {
+    private void showList(final String tableStatus, RecyclerView recyclerView) {
         Query query = mDatabase.child(NUMBER_CHILD)
                 .orderByChild(RESTAURANT_ID_CHILD)
                 .equalTo(restaurantID);
@@ -101,122 +101,29 @@ public class GuestFragment extends Fragment {
             @Override
             protected void populateViewHolder(NumberViewHolder viewHolder, Number number, int position) {
                 String status = number.getStatus();
-                if (status.equals(STATUS_WAITING)) {
+                if (status.equals(tableStatus)) {
                     viewHolder.setNumberName(number.getNumberName());
                     viewHolder.onClick(number);
                 } else {
                     viewHolder.mNumberNameLinearLayout.setVisibility(View.GONE);  // NEED. otherwise the separator line will get overlapped
                     viewHolder.mNumberName.setVisibility(View.GONE);
+                    viewHolder.mSeparator.setVisibility(View.GONE);
                 }
             }
         };
-        waitingRecyclerView.setAdapter(adapter);
-
-//        query.addListenerForSingleValueEvent(new ValueEventListener() {
-//            @Override
-//            public void onDataChange(DataSnapshot dataSnapshot) {
-//                // show no result view
-//                if (!dataSnapshot.hasChildren()) {
-//                    waitingRecyclerView.setVisibility(View.GONE);
-//                    noGuestTextView.setVisibility(View.VISIBLE);
-//                    Log.d(TAG, "NO GUEST SHOWS");
-//                } else {
-//                    waitingRecyclerView.setVisibility(View.VISIBLE);
-//                    noGuestTextView.setVisibility(View.GONE);
-//                    Log.d(TAG, "GUEST VIEW SHOWS");
-//                }
-//            }
-//
-//            @Override
-//            public void onCancelled(DatabaseError databaseError) {
-//
-//            }
-//        });
-    }
-
-    private void showDiningList() {
-        Query query = mDatabase.child(NUMBER_CHILD)
-                .orderByChild(RESTAURANT_ID_CHILD)
-                .equalTo(restaurantID);
-
-        FirebaseRecyclerAdapter adapter = new FirebaseRecyclerAdapter<Number, NumberViewHolder>(
-                Number.class,
-                R.layout.item_brief_number,
-                NumberViewHolder.class,
-                query) {
-            @Override
-            protected void populateViewHolder(NumberViewHolder viewHolder, Number number, int position) {
-                String status = number.getStatus();
-                if (status.equals(STATUS_DINING)) {
-                    viewHolder.setNumberName(number.getNumberName());
-                    viewHolder.onClick(number);
-                } else {
-                    viewHolder.mNumberNameLinearLayout.setVisibility(View.GONE);  // NEED. otherwise the separator line will get overlapped
-                    viewHolder.mNumberName.setVisibility(View.GONE);
-                }
-            }
-        };
-        diningRecyclerView.setAdapter(adapter);
-    }
-
-    private void showCancelledList() {
-        Query query = mDatabase.child(NUMBER_CHILD)
-                .orderByChild(RESTAURANT_ID_CHILD)
-                .equalTo(restaurantID);
-
-        FirebaseRecyclerAdapter adapter = new FirebaseRecyclerAdapter<Number, NumberViewHolder>(
-                Number.class,
-                R.layout.item_brief_number,
-                NumberViewHolder.class,
-                query) {
-            @Override
-            protected void populateViewHolder(NumberViewHolder viewHolder, Number number, int position) {
-                String status = number.getStatus();
-                if (status.equals(STATUS_CANCELLED)) {
-                    viewHolder.setNumberName(number.getNumberName());
-                    viewHolder.onClick(number);
-                } else {
-                    viewHolder.mNumberNameLinearLayout.setVisibility(View.GONE);  // NEED. otherwise the separator line will get overlapped
-                    viewHolder.mNumberName.setVisibility(View.GONE);
-                }
-            }
-        };
-        cancelledRecyclerView.setAdapter(adapter);
-    }
-
-    private void showCompletedList() {
-        Query query = mDatabase.child(NUMBER_CHILD)
-                .orderByChild(RESTAURANT_ID_CHILD)
-                .equalTo(restaurantID);
-
-        FirebaseRecyclerAdapter adapter = new FirebaseRecyclerAdapter<Number, NumberViewHolder>(
-                Number.class,
-                R.layout.item_brief_number,
-                NumberViewHolder.class,
-                query) {
-            @Override
-            protected void populateViewHolder(NumberViewHolder viewHolder, Number number, int position) {
-                String status = number.getStatus();
-                if (status.equals(STATUS_COMPLETED)) {
-                    viewHolder.setNumberName(number.getNumberName());
-                    viewHolder.onClick(number);
-                } else {
-                    viewHolder.mNumberNameLinearLayout.setVisibility(View.GONE);  // NEED. otherwise the separator line will get overlapped
-                    viewHolder.mNumberName.setVisibility(View.GONE);
-                }
-            }
-        };
-        completedRecyclerView.setAdapter(adapter);
+        recyclerView.setAdapter(adapter);
     }
 
     public static class NumberViewHolder extends RecyclerView.ViewHolder {
         private TextView mNumberName;
         private LinearLayout mNumberNameLinearLayout;
+        private View mSeparator;
 
         public NumberViewHolder(View itemView) {
             super(itemView);
             mNumberName = (TextView) itemView.findViewById(R.id.numberName);
             mNumberNameLinearLayout = (LinearLayout)itemView.findViewById(R.id.numberNameLinearLayout);
+            mSeparator = itemView.findViewById(R.id.numberSeparator);
         }
 
         public void setNumberName(String numberName) {
