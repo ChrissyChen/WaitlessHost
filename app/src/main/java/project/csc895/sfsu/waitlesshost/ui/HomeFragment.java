@@ -38,6 +38,7 @@ public class HomeFragment extends Fragment {
     private static final String RESTAURANT_ID_CHILD = "restaurantID";
     private static final String NUMBER_CHILD = "numbers";
     private static final String TABLE_CHILD = "tables";
+    private static final String TABLE_ID_CHILD = "tableID";
     private static final String TABLE_STATUS_OPEN = "Open";
     private static final String TABLE_STATUS_SEATED = "Seated";
     private static final String TABLE_STATUS_DIRTY = "Dirty";
@@ -293,10 +294,14 @@ public class HomeFragment extends Fragment {
 
     private static void updateNumberStatus(String numberID) {
         //Number status: from Dining to Completed
+        //assign null to tableID child
         DatabaseReference databaseRef = FirebaseDatabase.getInstance().getReference();
         DatabaseReference numberRef = databaseRef.child(NUMBER_CHILD).child(numberID);
         numberRef.child(STATUS_CHILD).setValue(NUMBER_STATUS_COMPLETED);
         Log.d(TAG, "Number status change to Completed");
+
+        numberRef.child(TABLE_ID_CHILD).setValue(null);
+        Log.d(TAG, "Set tableID to null");
     }
 
     private static void showConfirmOpenAlertDialog(final Table table) {
