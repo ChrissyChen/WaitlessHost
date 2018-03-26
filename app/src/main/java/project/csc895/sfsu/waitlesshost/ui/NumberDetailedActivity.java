@@ -116,9 +116,10 @@ public class NumberDetailedActivity extends AppCompatActivity {
                 if (number != null) {
                     String status = number.getStatus();
                     tableID = number.getTableID();  // get tableID
-                    numberName = number.getNumberName();
 
-                    numberNameField.setText(numberName);
+                    numberName = number.getNumberName();
+                    String displayNumberName = "Number " + numberName;
+                    numberNameField.setText(displayNumberName);
                     statusField.setText(status);
                     customerName.setText(number.getUsername());
                     customerPhone.setText(number.getPhone());
