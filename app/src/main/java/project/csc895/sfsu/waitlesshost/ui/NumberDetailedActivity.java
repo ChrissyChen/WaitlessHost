@@ -46,7 +46,7 @@ public class NumberDetailedActivity extends AppCompatActivity {
     private static final String WAIT_NUM_TABLE_B_CHILD = "waitNumTableB";
     private static final String WAIT_NUM_TABLE_C_CHILD = "waitNumTableC";
     private static final String WAIT_NUM_TABLE_D_CHILD = "waitNumTableD";
-    private TextView numberNameField, statusField, customerName, customerPhone, partyNumber, createdTime;
+    private TextView numberNameField, statusField, customerName, customerPhone, partySize, createdTime;
     private Button completeButton, cancelButton, waitButton;
     private DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
     private String numberID, restaurantID, waitlistID, tableID;
@@ -77,7 +77,7 @@ public class NumberDetailedActivity extends AppCompatActivity {
         statusField = (TextView) findViewById(R.id.status);
         customerName = (TextView) findViewById(R.id.customerName);
         customerPhone = (TextView) findViewById(R.id.customerTelephone);
-        partyNumber = (TextView) findViewById(R.id.customerPartyNumber);
+        partySize = (TextView) findViewById(R.id.customerPartySize);
         createdTime = (TextView) findViewById(R.id.numberCreatedTime);
 
         tableIcon = (ImageView) findViewById(R.id.tableIcon);
@@ -123,7 +123,7 @@ public class NumberDetailedActivity extends AppCompatActivity {
                     statusField.setText(status);
                     customerName.setText(number.getUsername());
                     customerPhone.setText(number.getPhone());
-                    partyNumber.setText(String.valueOf(number.getPartyNumber()));
+                    partySize.setText(String.valueOf(number.getPartySize()));
                     createdTime.setText(number.getTimeCreated());
 
                     if (status.equals(NUMBER_STATUS_WAITING)) {         //show cancel button. hide other buttons

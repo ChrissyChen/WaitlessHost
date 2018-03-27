@@ -94,11 +94,11 @@
             android:layout_height="wrap_content"
             app:layout_row="4"
             app:layout_column="0"
-            android:text="@string/partyNumber"
+            android:text="@string/partySize"
             android:textStyle="bold" />
 
         <TextView
-            android:id="@+id/customerPartyNumber"
+            android:id="@+id/customerPartySize"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:layout_row="4"

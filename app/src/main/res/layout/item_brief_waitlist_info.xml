@@ -23,7 +23,7 @@
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:contentDescription="@string/partyNumber"
+                    android:contentDescription="@string/customer"
                     android:paddingTop="10dp"
                     android:paddingStart="10dp"
                     android:src="@drawable/ic_face_black_24px" />
@@ -54,18 +54,18 @@
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:contentDescription="@string/partyNumber"
+                    android:contentDescription="@string/partySize"
                     android:paddingTop="8dp"
                     android:paddingStart="10dp"
                     android:src="@drawable/ic_people_black_24px" />
 
                 <TextView
-                    android:id="@+id/partyNumber"
+                    android:id="@+id/partySize"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:paddingTop="12dp"
                     android:paddingStart="10dp"
-                    android:text="@string/partyNumber" />
+                    android:text="@string/partySize" />
 
                 <TextView
                     android:id="@+id/status"
@@ -86,7 +86,7 @@
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:contentDescription="@string/partyNumber"
+                    android:contentDescription="@string/createdTime"
                     android:paddingTop="8dp"
                     android:paddingStart="10dp"
                     android:paddingBottom="10dp"

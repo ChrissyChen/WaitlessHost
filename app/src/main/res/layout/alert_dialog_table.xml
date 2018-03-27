@@ -149,7 +149,7 @@
             android:visibility="gone"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:contentDescription="@string/partyNumber"
+            android:contentDescription="@string/partySize"
             android:layout_marginStart="29dp"
             android:layout_marginTop="10dp"
             app:srcCompat="@drawable/ic_people_black_24px"
@@ -157,11 +157,11 @@
             app:layout_row="6" />
 
         <TextView
-            android:id="@+id/customerPartyNumber"
+            android:id="@+id/customerPartySize"
             android:visibility="gone"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/partyNumber"
+            android:text="@string/partySize"
             android:paddingTop="12dp"
             app:layout_column="1"
             app:layout_row="6" />

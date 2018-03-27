@@ -91,11 +91,11 @@
         android:textColorHint="@color/colorPrimary">
 
         <EditText
-            android:id="@+id/partyNumber"
+            android:id="@+id/partySize"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:backgroundTint="@color/hintGrey"
-            android:hint="@string/party_number"
+            android:hint="@string/party_size"
             android:inputType="number"
             android:maxLines="1"
             android:textColor="@color/darkGrey" />

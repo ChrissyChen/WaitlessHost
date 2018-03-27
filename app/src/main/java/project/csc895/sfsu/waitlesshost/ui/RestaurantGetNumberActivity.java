@@ -58,12 +58,12 @@ public class RestaurantGetNumberActivity extends AppCompatActivity {
     private static final int TABLE_D_SIZE = 10;
     private LinearLayout mLinearLayout;
     private TextView mRestaurantNameField;
-    private EditText mFirstNameField, mLastNameField, mTelephoneField, mEmailField, mPartyNumberField;
+    private EditText mFirstNameField, mLastNameField, mTelephoneField, mEmailField, mPartySizeField;
     private PopupWindow mPopupWindow;
     private String currentTime;
     private String restaurantID, restaurantName, waitlistID;
     private String numberName, username, phone, email;
-    private int partyNumber;
+    private int partySize;
     private DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
     private int waitNumTableA, waitNumTableB, waitNumTableC, waitNumTableD;
     private int counterTableA, counterTableB, counterTableC, counterTableD;
@@ -99,7 +99,7 @@ public class RestaurantGetNumberActivity extends AppCompatActivity {
         mTelephoneField = (EditText) findViewById(R.id.telephone);
         mTelephoneField.addTextChangedListener(new PhoneNumberFormattingTextWatcher());
         mEmailField = (EditText) findViewById(R.id.email);
-        mPartyNumberField = (EditText) findViewById(R.id.partyNumber);
+        mPartySizeField = (EditText) findViewById(R.id.partySize);
     }
 
     private void getRestaurantName() {
@@ -167,7 +167,7 @@ public class RestaurantGetNumberActivity extends AppCompatActivity {
         String lastName = mLastNameField.getText().toString().trim();
         phone = mTelephoneField.getText().toString().trim();
         email = mEmailField.getText().toString().trim();
-        String partyNum = mPartyNumberField.getText().toString().trim();
+        String partyNum = mPartySizeField.getText().toString().trim();
 
         if (TextUtils.isEmpty(firstName)) {
             mFirstNameField.requestFocus();
@@ -191,13 +191,13 @@ public class RestaurantGetNumberActivity extends AppCompatActivity {
             return;
         }
         if (TextUtils.isEmpty(partyNum)) {
-            mPartyNumberField.requestFocus();
-            mPartyNumberField.setError(getString(R.string.empty_party));
+            mPartySizeField.requestFocus();
+            mPartySizeField.setError(getString(R.string.empty_party));
             return;
         }
 
-        partyNumber = Integer.valueOf(partyNum);
-        if (partyNumber > TABLE_D_SIZE) {
+        partySize = Integer.valueOf(partyNum);
+        if (partySize > TABLE_D_SIZE) {
             Toast.makeText(RestaurantGetNumberActivity.this, getString(R.string.large_party), Toast.LENGTH_SHORT).show();
             return;
         }
@@ -211,19 +211,19 @@ public class RestaurantGetNumberActivity extends AppCompatActivity {
         DatabaseReference numberRef = mDatabase.child(NUMBER_CHILD);
         String key = numberRef.push().getKey();  // newly generated numberID
         username = firstName + " " + lastName;
-        if (partyNumber <= TABLE_A_SIZE) {
+        if (partySize <= TABLE_A_SIZE) {
             waitNumTableA += 1;
             counterTableA += 1;
             numberName = "A" + counterTableA;
-        } else if (partyNumber <= TABLE_B_SIZE) {
+        } else if (partySize <= TABLE_B_SIZE) {
             waitNumTableB += 1;
             counterTableB += 1;
             numberName = "B" + counterTableB;
-        } else if (partyNumber <= TABLE_C_SIZE) {
+        } else if (partySize <= TABLE_C_SIZE) {
             waitNumTableC += 1;
             counterTableC += 1;
             numberName = "C" + counterTableC;
-        } else if (partyNumber <= TABLE_D_SIZE) {
+        } else if (partySize <= TABLE_D_SIZE) {
             waitNumTableD += 1;
             counterTableD += 1;
             numberName = "D" + counterTableD;
@@ -231,7 +231,7 @@ public class RestaurantGetNumberActivity extends AppCompatActivity {
         SimpleDateFormat format = new SimpleDateFormat("EEEE, MMMM d, yyyy 'at' h:mm a");
         currentTime = format.format(Calendar.getInstance().getTime());
 
-        Number number = new Number(key, restaurantID, restaurantName, null, "N/A", username, phone, email, currentTime, numberName, partyNumber, "Waiting");
+        Number number = new Number(key, restaurantID, restaurantName, null, "N/A", username, phone, email, currentTime, numberName, partySize, "Waiting");
         numberRef.child(key).setValue(number);
         Toast.makeText(RestaurantGetNumberActivity.this, "Number Created! ", Toast.LENGTH_SHORT).show();
     }
@@ -260,13 +260,13 @@ public class RestaurantGetNumberActivity extends AppCompatActivity {
             TextView restaurant = (TextView) customView.findViewById(R.id.restaurant);
             TextView customerName = (TextView) customView.findViewById(R.id.customerName);
             TextView telephone = (TextView) customView.findViewById(R.id.customerTelephone);
-            TextView partyNumberTextView = (TextView) customView.findViewById(R.id.customerPartyNumber);
+            TextView partySizeTextView = (TextView) customView.findViewById(R.id.customerPartySize);
             TextView createdTime = (TextView) customView.findViewById(R.id.numberCreatedTime);
             number.setText(numberName);
             restaurant.setText(restaurantName);
             customerName.setText(username);
             telephone.setText(phone);
-            partyNumberTextView.setText(String.valueOf(partyNumber));
+            partySizeTextView.setText(String.valueOf(partySize));
             createdTime.setText(currentTime);
 
             Button closeButton = (Button) customView.findViewById(R.id.closeButton);

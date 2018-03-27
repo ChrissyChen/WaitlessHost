@@ -210,7 +210,7 @@ public class HomeFragment extends Fragment {
         final TextView numberNameField = alertLayout.findViewById(R.id.numberName);
         final TextView customerNameField = alertLayout.findViewById(R.id.customerName);
         final TextView customerTelField = alertLayout.findViewById(R.id.customerTelephone);
-        final TextView partyNumberField = alertLayout.findViewById(R.id.customerPartyNumber);
+        final TextView partySizeField = alertLayout.findViewById(R.id.customerPartySize);
 
         numberIcon.setVisibility(View.VISIBLE);
         customerIcon.setVisibility(View.VISIBLE);
@@ -219,7 +219,7 @@ public class HomeFragment extends Fragment {
         numberNameField.setVisibility(View.VISIBLE);
         customerNameField.setVisibility(View.VISIBLE);
         customerTelField.setVisibility(View.VISIBLE);
-        partyNumberField.setVisibility(View.VISIBLE);
+        partySizeField.setVisibility(View.VISIBLE);
 
         //load customer info in Number child
         DatabaseReference ref = FirebaseDatabase.getInstance().getReference();
@@ -234,7 +234,7 @@ public class HomeFragment extends Fragment {
                     numberNameField.setText(numberName);
                     customerNameField.setText(number.getUsername());
                     customerTelField.setText(number.getPhone());
-                    partyNumberField.setText(String.valueOf(number.getPartyNumber()));
+                    partySizeField.setText(String.valueOf(number.getPartySize()));
                 }
             }
 

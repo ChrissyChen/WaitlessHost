@@ -127,7 +127,7 @@ public class AssignWaitlistActivity extends AppCompatActivity {
             @Override
             protected void populateViewHolder(WaitingNumberViewHolder viewHolder, Number number, int position) {
                 String status = number.getStatus();
-                int partySize = number.getPartyNumber();
+                int partySize = number.getPartySize();
                 if (status.equals(NUMBER_STATUS_WAITING) && partySize <= tableSize) {
                     viewHolder.setCustomerName(number.getUsername());
                     viewHolder.setNumberName(number.getNumberName());
@@ -174,7 +174,7 @@ public class AssignWaitlistActivity extends AppCompatActivity {
             mWaitingGuestCardView = (CardView) itemView.findViewById(R.id.waitingGuestCardView);
             mCustomerName = (TextView) itemView.findViewById(R.id.customerName);
             mNumberName = (TextView) itemView.findViewById(R.id.numberName);
-            mPartySize = (TextView) itemView.findViewById(R.id.partyNumber);
+            mPartySize = (TextView) itemView.findViewById(R.id.partySize);
             mStatus = (TextView) itemView.findViewById(R.id.status);
             mCreatedTime = (TextView) itemView.findViewById(R.id.numberCreatedTime);
         }
