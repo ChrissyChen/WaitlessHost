@@ -144,7 +144,7 @@
     <string name="party_size">* Party Size</string>
     <string name="confirm">Confirm</string>
     <string name="empty_first_name">First Name is empty. Enter first name!</string>
-    <string name="empty_party">Party size is empty. Enter party number!</string>
+    <string name="empty_party">Party size is empty. Enter party size!</string>
     <string name="large_party">Party size is larger than 10. Please create multiple numbers separately!</string>
     <string name="number_added">Number Added!</string>
     <string name="close">Close</string>

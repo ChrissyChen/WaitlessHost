@@ -214,19 +214,19 @@ public class RestaurantGetNumberActivity extends AppCompatActivity {
         if (partySize <= TABLE_A_SIZE) {
             waitNumTableA += 1;
             counterTableA += 1;
-            numberName = "A" + counterTableA;
+            numberName = "A #" + counterTableA;
         } else if (partySize <= TABLE_B_SIZE) {
             waitNumTableB += 1;
             counterTableB += 1;
-            numberName = "B" + counterTableB;
+            numberName = "B #" + counterTableB;
         } else if (partySize <= TABLE_C_SIZE) {
             waitNumTableC += 1;
             counterTableC += 1;
-            numberName = "C" + counterTableC;
+            numberName = "C #" + counterTableC;
         } else if (partySize <= TABLE_D_SIZE) {
             waitNumTableD += 1;
             counterTableD += 1;
-            numberName = "D" + counterTableD;
+            numberName = "D #" + counterTableD;
         }
         SimpleDateFormat format = new SimpleDateFormat("EEEE, MMMM d, yyyy 'at' h:mm a");
         currentTime = format.format(Calendar.getInstance().getTime());
