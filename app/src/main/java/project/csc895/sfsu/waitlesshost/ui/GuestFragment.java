@@ -54,10 +54,7 @@ public class GuestFragment extends Fragment {
         Log.d("restaurantID", restaurantID);
 
         initViews(view);
-        showList(STATUS_WAITING, waitingRecyclerView);
-        showList(STATUS_DINING, diningRecyclerView);
-        showList(STATUS_CANCELLED, cancelledRecyclerView);
-        showList(STATUS_COMPLETED, completedRecyclerView);
+        loadNumberInfo();
 
         return view;
     }
@@ -84,6 +81,13 @@ public class GuestFragment extends Fragment {
         diningRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         cancelledRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         completedRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+    }
+
+    private void loadNumberInfo() {
+        showList(STATUS_WAITING, waitingRecyclerView);
+        showList(STATUS_DINING, diningRecyclerView);
+        showList(STATUS_CANCELLED, cancelledRecyclerView);
+        showList(STATUS_COMPLETED, completedRecyclerView);
     }
 
     private void showList(final String tableStatus, RecyclerView recyclerView) {
@@ -140,5 +144,11 @@ public class GuestFragment extends Fragment {
                 }
             });
         }
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        loadNumberInfo();  // refresh if data changes
     }
 }
