@@ -116,6 +116,9 @@
     <string name="no_guest">No Guest</string>
     <string name="number_name">Number Name</string>
     <string name="add_new_number">Add new number</string>
+    <string name="reset_counter">Reset Waitlist Counter</string>
+    <string name="clear_cancelled_list">Clear Cancelled List</string>
+    <string name="clear_completed_list">Clear Completed List</string>
 
     <!-- Number Detailed Activity -->
     <string name="number_detail">Number Details</string>

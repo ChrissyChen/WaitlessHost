@@ -233,16 +233,16 @@ public class NumberDetailedActivity extends AppCompatActivity {
 
     private void updateWaitlistInfoWhenCancel() {
         DatabaseReference ref = mDatabase.child(WAITLIST_CHILD).child(waitlistID);
-        if (numberName.charAt(0) == 'A') {
+        if (numberName.charAt(2) == 'A') {
             waitNumTableA -= 1;
             ref.child(WAIT_NUM_TABLE_A_CHILD).setValue(waitNumTableA);
-        } else if (numberName.charAt(0) == 'B') {
+        } else if (numberName.charAt(2) == 'B') {
             waitNumTableB -= 1;
             ref.child(WAIT_NUM_TABLE_B_CHILD).setValue(waitNumTableB);
-        } else if (numberName.charAt(0) == 'C') {
+        } else if (numberName.charAt(2) == 'C') {
             waitNumTableC -= 1;
             ref.child(WAIT_NUM_TABLE_C_CHILD).setValue(waitNumTableC);
-        } else if (numberName.charAt(0) == 'D') {
+        } else if (numberName.charAt(2) == 'D') {
             waitNumTableD -= 1;
             ref.child(WAIT_NUM_TABLE_D_CHILD).setValue(waitNumTableD);
         }
@@ -287,16 +287,16 @@ public class NumberDetailedActivity extends AppCompatActivity {
 
     private void updateWaitlistInfoWhenWait() {
         DatabaseReference ref = mDatabase.child(WAITLIST_CHILD).child(waitlistID);
-        if (numberName.charAt(0) == 'A') {
+        if (numberName.charAt(2) == 'A') {
             waitNumTableA += 1;
             ref.child(WAIT_NUM_TABLE_A_CHILD).setValue(waitNumTableA);
-        } else if (numberName.charAt(0) == 'B') {
+        } else if (numberName.charAt(2) == 'B') {
             waitNumTableB += 1;
             ref.child(WAIT_NUM_TABLE_B_CHILD).setValue(waitNumTableB);
-        } else if (numberName.charAt(0) == 'C') {
+        } else if (numberName.charAt(2) == 'C') {
             waitNumTableC += 1;
             ref.child(WAIT_NUM_TABLE_C_CHILD).setValue(waitNumTableC);
-        } else if (numberName.charAt(0) == 'D') {
+        } else if (numberName.charAt(2) == 'D') {
             waitNumTableD += 1;
             ref.child(WAIT_NUM_TABLE_D_CHILD).setValue(waitNumTableD);
         }
