@@ -46,6 +46,7 @@ public class GuestFragment extends Fragment {
     private static final String COUNTER_TABLE_C_CHILD = "counterTableC";
     private static final String COUNTER_TABLE_D_CHILD = "counterTableD";
     private static final String NUMBER_CHILD = "numbers";
+    private static final String HIDDEN_CHILD = "hidden";
     private static final String STATUS_WAITING = "Waiting";
     private static final String STATUS_DINING = "Dining";
     private static final String STATUS_CANCELLED = "Cancelled";
@@ -55,7 +56,7 @@ public class GuestFragment extends Fragment {
     private String restaurantID, waitlistID;
     private TextView noGuestTextView;
     private ImageView addNumberImageView;
-    private RecyclerView waitingRecyclerView, diningRecyclerView, cancelledRecyclerView,completedRecyclerView;
+    private RecyclerView waitingRecyclerView, diningRecyclerView, cancelledRecyclerView, completedRecyclerView;
     private DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
     private LinearLayoutManager waitingLinearLayoutManager, diningLinearLayoutManager, cancelLinearLayoutManager, completedLinearLayoutManager;
 
@@ -113,7 +114,7 @@ public class GuestFragment extends Fragment {
         showList(STATUS_COMPLETED, completedRecyclerView);
     }
 
-    private void showList(final String tableStatus, RecyclerView recyclerView) {
+    private void showList(final String numberStatus, RecyclerView recyclerView) {
         Query query = mDatabase.child(NUMBER_CHILD)
                 .orderByChild(RESTAURANT_ID_CHILD)
                 .equalTo(restaurantID);
@@ -126,7 +127,7 @@ public class GuestFragment extends Fragment {
             @Override
             protected void populateViewHolder(NumberViewHolder viewHolder, Number number, int position) {
                 String status = number.getStatus();
-                if (status.equals(tableStatus)) {
+                if (status.equals(numberStatus) && !number.isHidden()) {
                     viewHolder.setNumberName(number.getNumberName());
                     viewHolder.onClick(number);
                 } else {
@@ -147,7 +148,7 @@ public class GuestFragment extends Fragment {
         public NumberViewHolder(View itemView) {
             super(itemView);
             mNumberName = (TextView) itemView.findViewById(R.id.numberName);
-            mNumberNameLinearLayout = (LinearLayout)itemView.findViewById(R.id.numberNameLinearLayout);
+            mNumberNameLinearLayout = (LinearLayout) itemView.findViewById(R.id.numberNameLinearLayout);
             mSeparator = itemView.findViewById(R.id.numberSeparator);
         }
 
@@ -180,7 +181,7 @@ public class GuestFragment extends Fragment {
                 if (!dataSnapshot.hasChildren()) {
                     Log.d("Error", "NO WAITLIST SHOWS");
                 } else {
-                    for (DataSnapshot objSnapshot: dataSnapshot.getChildren()) {
+                    for (DataSnapshot objSnapshot : dataSnapshot.getChildren()) {
                         Waitlist waitlist = objSnapshot.getValue(Waitlist.class);
                         if (waitlist != null) {
                             waitlistID = waitlist.getWaitlistID();
@@ -212,13 +213,13 @@ public class GuestFragment extends Fragment {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.clearCancelledListAction:
-                // todo
-                Toast.makeText(getActivity(), "clear cancelled button clicked!", Toast.LENGTH_SHORT).show();
+                showConfirmClearCancelledListAlertDialog();
+                //Toast.makeText(getActivity(), "clear cancelled button clicked!", Toast.LENGTH_SHORT).show();
                 return true;
 
             case R.id.clearCompletedListAction:
-                // todo
-                Toast.makeText(getActivity(), "clear completed button clicked!", Toast.LENGTH_SHORT).show();
+                showConfirmClearCompletedListAlertDialog();
+                //Toast.makeText(getActivity(), "clear completed button clicked!", Toast.LENGTH_SHORT).show();
                 return true;
 
             case R.id.resetWaitlistCounterAction:
@@ -228,6 +229,105 @@ public class GuestFragment extends Fragment {
             default:
                 return super.onOptionsItemSelected(item);
         }
+    }
+
+    private void showConfirmClearCancelledListAlertDialog() {
+        String message = "Are you sure to clear the Cancelled list?";
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        builder.setMessage(message);
+        builder.setCancelable(false); // Disallow cancel of AlertDialog on click of back button and outside touch
+
+        builder.setPositiveButton("Yes",
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        if (!isListEmpty(cancelLinearLayoutManager)) {
+                            hideList(STATUS_CANCELLED);
+                        } else {
+                            Toast.makeText(getActivity(), "Cancelled list is already empty!", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
+
+        builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.cancel();
+            }
+        });
+
+        AlertDialog alertDialog = builder.create();
+        alertDialog.show();
+    }
+
+    private void showConfirmClearCompletedListAlertDialog() {
+        String message = "Are you sure to reset the Completed list?";
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        builder.setMessage(message);
+        builder.setCancelable(false); // Disallow cancel of AlertDialog on click of back button and outside touch
+
+        builder.setPositiveButton("Yes",
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        if(!isListEmpty(completedLinearLayoutManager)) {
+                            hideList(STATUS_COMPLETED);
+                        } else {
+                            Toast.makeText(getActivity(), "Completed list is already empty!", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
+
+        builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.cancel();
+            }
+        });
+
+        AlertDialog alertDialog = builder.create();
+        alertDialog.show();
+    }
+
+    private boolean isListEmpty(LinearLayoutManager layoutManager) {
+        int position = layoutManager.findFirstVisibleItemPosition();
+        if (position == RecyclerView.NO_POSITION) {  // means the list is empty
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    private void hideList(final String numberStatus) {
+        Query query = mDatabase.child(NUMBER_CHILD)
+                .orderByChild(RESTAURANT_ID_CHILD)
+                .equalTo(restaurantID);
+
+        query.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if (dataSnapshot.hasChildren()) {
+                    for (DataSnapshot objSnapshot : dataSnapshot.getChildren()) {
+
+                        Number number = objSnapshot.getValue(Number.class);
+                        if (number != null) {
+                            String status = number.getStatus();
+
+                            if (status.equals(numberStatus)) {
+                                String numberID = number.getNumberID();
+                                DatabaseReference ref = mDatabase.child(NUMBER_CHILD).child(numberID);
+                                ref.child(HIDDEN_CHILD).setValue(true);
+                            }
+                        }
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
     }
 
     private void showConfirmResetCounterAlertDialog() {

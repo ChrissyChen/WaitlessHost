@@ -18,11 +18,12 @@ public class Number {
     private String numberName; // based on tableSize, A1, B2...
     private int partySize;
     private String status;   // waiting, dining, canceled, completed
+    private boolean isHidden; //when set to true, then load list will not show this number in the list
 
     public Number() {
     }
 
-    public Number(String numberID, String restaurantID, String restaurantName, String tableID, String userID, String username, String phone, String email, String timeCreated, String numberName, int partySize, String status) {
+    public Number(String numberID, String restaurantID, String restaurantName, String tableID, String userID, String username, String phone, String email, String timeCreated, String numberName, int partySize, String status, boolean isHidden) {
         this.numberID = numberID;
         this.restaurantID = restaurantID;
         this.restaurantName = restaurantName;
@@ -35,6 +36,7 @@ public class Number {
         this.numberName = numberName;
         this.partySize = partySize;
         this.status = status;
+        this.isHidden = isHidden;
     }
 
     public String getNumberID() {
@@ -131,5 +133,13 @@ public class Number {
 
     public void setStatus(String status) {
         this.status = status;
+    }
+
+    public boolean isHidden() {
+        return isHidden;
+    }
+
+    public void setHidden(boolean hidden) {
+        isHidden = hidden;
     }
 }
