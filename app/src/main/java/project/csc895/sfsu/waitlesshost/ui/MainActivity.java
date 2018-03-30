@@ -27,6 +27,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.iid.FirebaseInstanceId;
 
 import project.csc895.sfsu.waitlesshost.R;
 import project.csc895.sfsu.waitlesshost.model.Restaurant;
@@ -55,6 +56,10 @@ public class MainActivity extends AppCompatActivity {
 
         //Get Firebase mFirebaseAuth instance
         mFirebaseAuth = FirebaseAuth.getInstance();
+
+        //Get FCM registered token
+        String refreshedToken = FirebaseInstanceId.getInstance().getToken();
+        Log.d(TAG, "Refreshed token: " + refreshedToken);
 
         // set Navigation Drawer icon
         Toolbar toolbar = findViewById(R.id.toolbar);
