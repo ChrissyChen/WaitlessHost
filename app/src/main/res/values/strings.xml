@@ -131,6 +131,7 @@
     <string name="change_to_waiting">Add back to Waitlist</string>
     <string name="cancel">Cancel</string>
     <string name="complete">Complete</string>
+    <string name="notify">Notify</string>
     <string name="back">Back</string>
     <string name="yes">Yes</string>
     <string name="no">No</string>

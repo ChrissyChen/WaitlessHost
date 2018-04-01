@@ -10,30 +10,21 @@ public class User {
     private String lastName;
     private String telephone;
     private String email;
-    private String password;
+    private String password;  // didn't store in db
     private String photoUrl;  // TODO
-    private List<String> favorites; // store restaurant_ids
+    private List<String> favorites; // store restaurant_ids TODO
+    private String tokenFCM; // FCM registered InstanceID token
 
     public User() {
     }
 
-    public User(String userID, String firstName, String lastName, String telephone, String email) {
+    public User(String userID, String firstName, String lastName, String telephone, String email, String tokenFCM) {
         this.userID = userID;
         this.firstName = firstName;
         this.lastName = lastName;
         this.telephone = telephone;
         this.email = email;
-    }
-
-    public User(String userID, String firstName, String lastName, String telephone, String email, String password, String photoUrl, List<String> favorites) {
-        this.userID = userID;
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.telephone = telephone;
-        this.email = email;
-        this.password = password;
-        this.photoUrl = photoUrl;
-        this.favorites = favorites;
+        this.tokenFCM = tokenFCM;
     }
 
     public String getUserID() {
@@ -60,6 +51,14 @@ public class User {
         this.lastName = lastName;
     }
 
+    public String getTelephone() {
+        return telephone;
+    }
+
+    public void setTelephone(String telephone) {
+        this.telephone = telephone;
+    }
+
     public String getEmail() {
         return email;
     }
@@ -76,14 +75,6 @@ public class User {
         this.password = password;
     }
 
-    public String getTelephone() {
-        return telephone;
-    }
-
-    public void setTelephone(String telephone) {
-        this.telephone = telephone;
-    }
-
     public String getPhotoUrl() {
         return photoUrl;
     }
@@ -98,5 +89,13 @@ public class User {
 
     public void setFavorites(List<String> favorites) {
         this.favorites = favorites;
+    }
+
+    public String getTokenFCM() {
+        return tokenFCM;
+    }
+
+    public void setTokenFCM(String tokenFCM) {
+        this.tokenFCM = tokenFCM;
     }
 }

@@ -24,12 +24,15 @@ import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
 import project.csc895.sfsu.waitlesshost.R;
+import project.csc895.sfsu.waitlesshost.model.Message;
 import project.csc895.sfsu.waitlesshost.model.Number;
 import project.csc895.sfsu.waitlesshost.model.Table;
+import project.csc895.sfsu.waitlesshost.model.User;
 import project.csc895.sfsu.waitlesshost.model.Waitlist;
 
 public class NumberDetailedActivity extends AppCompatActivity {
 
+    private static final String TAG = "NumberDetailedActivity";
     private static final String NUMBER_CHILD = "numbers";
     private static final String WAITLIST_CHILD = "waitlists";
     private static final String TABLE_CHILD = "tables";
@@ -46,14 +49,17 @@ public class NumberDetailedActivity extends AppCompatActivity {
     private static final String WAIT_NUM_TABLE_B_CHILD = "waitNumTableB";
     private static final String WAIT_NUM_TABLE_C_CHILD = "waitNumTableC";
     private static final String WAIT_NUM_TABLE_D_CHILD = "waitNumTableD";
+    private static final String MESSAGE_CHILD = "messages";
+    private static final String USER_CHILD = "users";
     private TextView numberNameField, statusField, customerName, customerPhone, partySize, createdTime;
-    private Button completeButton, cancelButton, waitButton;
+    private Button completeButton, cancelButton, waitButton, notifyButton;
     private DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
     private String numberID, restaurantID, waitlistID, tableID;
-    private String numberName;
+    private String numberName, restaurantName;
     private int waitNumTableA, waitNumTableB, waitNumTableC, waitNumTableD;
     private ImageView tableIcon;
     private TextView tableNameField;
+    private String userID, userToken;
 
 
     @Override
@@ -65,10 +71,13 @@ public class NumberDetailedActivity extends AppCompatActivity {
         Intent intent = getIntent();
         numberID = intent.getStringExtra(GuestFragment.EXTRA_NUMBER_ID);
         restaurantID = intent.getStringExtra(GuestFragment.EXTRA_RESTAURANT_ID);
+        userID = intent.getStringExtra(GuestFragment.EXTRA_USER_ID);
+        Log.d(TAG, "user ID " + userID);
 
         initViews();
         loadNumberInfo();
         getWaitlistInfo();
+        getUserToken();
 
     }
 
@@ -86,6 +95,7 @@ public class NumberDetailedActivity extends AppCompatActivity {
         completeButton = (Button) findViewById(R.id.completeButton);
         cancelButton = (Button) findViewById(R.id.cancelButton);
         waitButton = (Button) findViewById(R.id.waitButton);
+        notifyButton = (Button) findViewById(R.id.notifyButton);
         completeButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -104,6 +114,12 @@ public class NumberDetailedActivity extends AppCompatActivity {
                 showConfirmWaitAlertDialog();
             }
         });
+        notifyButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showConfirmNotifyAlertDialog();
+            }
+        });
     }
 
     private void loadNumberInfo() {
@@ -116,6 +132,8 @@ public class NumberDetailedActivity extends AppCompatActivity {
                 if (number != null) {
                     String status = number.getStatus();
                     tableID = number.getTableID();  // get tableID
+                    //userID = number.getUserID();  // get userID. get through intent
+                    restaurantName = number.getRestaurantName();
 
                     numberName = number.getNumberName();
                     String displayNumberName = "Number " + numberName;
@@ -126,22 +144,31 @@ public class NumberDetailedActivity extends AppCompatActivity {
                     partySize.setText(String.valueOf(number.getPartySize()));
                     createdTime.setText(number.getTimeCreated());
 
-                    if (status.equals(NUMBER_STATUS_WAITING)) {         //show cancel button. hide other buttons
-                        cancelButton.setVisibility(View.VISIBLE);
+                    if (status.equals(NUMBER_STATUS_WAITING)) {  //show cancel and notify buttons. hide other buttons
+                        if (userID.equals("N/A")) {     // if userID is "N/A" means the number is created by restaurant
+                            cancelButton.setVisibility(View.VISIBLE);
+                            notifyButton.setVisibility(View.GONE);
+                        } else {
+                            cancelButton.setVisibility(View.VISIBLE);
+                            notifyButton.setVisibility(View.VISIBLE);
+                        }
                         completeButton.setVisibility(View.GONE);
                         waitButton.setVisibility(View.GONE);
                     } else if (status.equals(NUMBER_STATUS_DINING)) {   // show complete button. hide other buttons
                         completeButton.setVisibility(View.VISIBLE);
                         cancelButton.setVisibility(View.GONE);
                         waitButton.setVisibility(View.GONE);
+                        notifyButton.setVisibility(View.GONE);
                     } else if (status.equals(NUMBER_STATUS_CANCELLED)) { // show wait button. hide other buttons
                         waitButton.setVisibility(View.VISIBLE);
                         completeButton.setVisibility(View.GONE);
                         cancelButton.setVisibility(View.GONE);
+                        notifyButton.setVisibility(View.GONE);
                     } else if (status.equals(NUMBER_STATUS_COMPLETED)) {   // hide all buttons
                         completeButton.setVisibility(View.GONE);
                         cancelButton.setVisibility(View.GONE);
                         waitButton.setVisibility(View.GONE);
+                        notifyButton.setVisibility(View.GONE);
                     }
 
                     if (tableID != null) {
@@ -173,7 +200,7 @@ public class NumberDetailedActivity extends AppCompatActivity {
                 if (!dataSnapshot.hasChildren()) {
                     Log.d("Error", "NO WAITLIST SHOWS");
                 } else {
-                    for (DataSnapshot objSnapshot: dataSnapshot.getChildren()) {
+                    for (DataSnapshot objSnapshot : dataSnapshot.getChildren()) {
                         Waitlist waitlist = objSnapshot.getValue(Waitlist.class);
                         if (waitlist != null) {
                             waitlistID = waitlist.getWaitlistID();
@@ -364,6 +391,72 @@ public class NumberDetailedActivity extends AppCompatActivity {
 
         Toast.makeText(NumberDetailedActivity.this, "Number Completed and Table is under cleaning!", Toast.LENGTH_LONG).show();
     }
+
+    /* Notify a number */
+    private void showConfirmNotifyAlertDialog() {
+        String message = "Send a notification to the guest that the table will be ready soon?";
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(NumberDetailedActivity.this);
+        builder.setMessage(message);
+        builder.setCancelable(false); // Disallow cancel of AlertDialog on click of back button and outside touch
+
+        builder.setPositiveButton("Yes",
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        sendTableReadyNotification();
+                    }
+                });
+
+        builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.cancel();
+            }
+        });
+
+        AlertDialog alertDialog = builder.create();
+        alertDialog.show();
+    }
+
+    private void sendTableReadyNotification() {
+        // add a new node in message child. it will trigger FCM Cloud Function to push a notification
+        DatabaseReference ref = FirebaseDatabase.getInstance().getReference(MESSAGE_CHILD);
+        String key = ref.push().getKey();  // newly generated messageID
+
+        Log.d(TAG, "user token " + userToken);
+        if (userToken != null) {
+            String title = "Waitlist - " + restaurantName;
+            String message = "Your Number [" + numberName + "] will be assign to a table soon!";
+            Message newMessage = new Message(restaurantID, userToken, title, message);
+            ref.child(key).setValue(newMessage);
+            Log.d(TAG, "creating a new message succeed!");
+            Toast.makeText(NumberDetailedActivity.this, "Notification Sent!", Toast.LENGTH_LONG).show();
+        } else {
+            Log.d(TAG, "user token is null");
+        }
+    }
+
+    private void getUserToken() {
+
+        DatabaseReference ref = mDatabase.child(USER_CHILD).child(userID);
+
+        ref.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                User user = dataSnapshot.getValue(User.class);
+                if (user != null) {
+                    userToken = user.getTokenFCM();
+                    Log.d(TAG, "user token inside callback " + userToken);
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+    }
+
 
     @Override
     public void onBackPressed() {

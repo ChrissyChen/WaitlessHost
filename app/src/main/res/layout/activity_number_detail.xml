@@ -172,6 +172,7 @@
 
     <Button
         android:id="@+id/completeButton"
+        android:visibility="gone"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
@@ -183,6 +184,7 @@
 
     <Button
         android:id="@+id/cancelButton"
+        android:visibility="gone"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
@@ -194,6 +196,7 @@
 
     <Button
         android:id="@+id/waitButton"
+        android:visibility="gone"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
@@ -202,6 +205,18 @@
         android:textColor="@color/lightGrey"
         android:textStyle="bold"
         android:text="@string/change_to_waiting" />
+
+    <Button
+        android:id="@+id/notifyButton"
+        android:visibility="gone"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:layout_gravity="center"
+        android:background="@color/colorPrimary"
+        android:textColor="@color/lightGrey"
+        android:textStyle="bold"
+        android:text="@string/notify" />
 
     <!--<Button-->
         <!--android:id="@+id/closeButton"-->

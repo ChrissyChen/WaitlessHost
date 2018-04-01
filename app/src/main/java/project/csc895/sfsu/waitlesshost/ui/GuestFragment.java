@@ -53,6 +53,7 @@ public class GuestFragment extends Fragment {
     private static final String STATUS_COMPLETED = "Completed";
     public final static String EXTRA_NUMBER_ID = "Pass Number id";
     public final static String EXTRA_RESTAURANT_ID = "Pass Restaurant id";
+    public final static String EXTRA_USER_ID = "Pass User id";
     private String restaurantID, waitlistID;
     private TextView noGuestTextView;
     private ImageView addNumberImageView;
@@ -164,6 +165,7 @@ public class GuestFragment extends Fragment {
                     Intent intent = new Intent(context, NumberDetailedActivity.class);
                     intent.putExtra(EXTRA_NUMBER_ID, number.getNumberID());// pass number id
                     intent.putExtra(EXTRA_RESTAURANT_ID, number.getRestaurantID());
+                    intent.putExtra(EXTRA_USER_ID, number.getUserID());
                     context.startActivity(intent);
                 }
             });
