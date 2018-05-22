@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_home"
+            android:icon="@drawable/ic_store_mall_directory_black_24px"
+            android:title="@string/home" />
+        <item
+            android:id="@+id/nav_general_settings"
+            android:icon="@drawable/ic_settings_black_24px"
+            android:title="@string/general_setting" />
+        <item
+            android:id="@+id/nav_table"
+            android:icon="@drawable/ic_local_bar_black_24px"
+            android:title="@string/tables" />
+        <item
+            android:id="@+id/nav_open_hours"
+            android:icon="@drawable/ic_access_time_black_24px"
+            android:title="@string/open_hours" />
+        <!--<item-->
+            <!--android:id="@+id/nav_menu"-->
+            <!--android:icon="@drawable/ic_restaurant_menu_black_24px"-->
+            <!--android:title="@string/menu" />-->
+        <item
+            android:id="@+id/nav_guest"
+            android:icon="@drawable/ic_group_black_24px"
+            android:title="@string/guests" />
+        <item
+            android:id="@+id/nav_signout"
+            android:icon="@drawable/ic_input_black_24px"
+            android:title="@string/sign_out" />
+    </group>
+</menu>

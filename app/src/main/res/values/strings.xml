@@ -1,15 +1,15 @@
 <resources>
-    <string name="app_name">WaitlessHost</string>
+    <string name="app_name">Waitless Host</string>
 
     <!--for textinputlayout-->
     <item name="visible" type="id"/>
     <item name="masked" type="id"/>
 
-    <!-- Strings related to login -->
+    <!-- Strings related to login Firebase ui-->
     <string name="prompt_email">Email</string>
     <string name="prompt_password">Password (optional)</string>
     <string name="action_sign_in">Sign in or register</string>
-    <string name="action_sign_in_short">Sign in</string>
+    <string name="action_sign_up_short">Sign up</string>
     <string name="error_invalid_email">This email address is invalid</string>
     <string name="error_invalid_password">This password is too short</string>
     <string name="error_incorrect_password">This password is incorrect</string>
@@ -17,4 +17,140 @@
     <string name="permission_rationale">"Contacts permissions are needed for providing email
         completions."
     </string>
+
+
+
+
+    <!-- Sign Up Page -->
+    <string name="slogan">Make Dining Efficient</string>
+    <string name="sign_up">Sign up</string>
+    <string name="btn_link_to_login">Already registered. Login me!</string>
+    <string name="send_verified_email">Signup successfully. Verification email sent to activate your account!</string>
+    <string name="empty_name">Name is empty. Enter restaurant name!</string>
+    <string name="empty_address">Address is empty. Enter restaurant address!</string>
+    <string name="empty_phone">Phone is empty. Enter phone number!</string>
+
+    <!-- Login Page -->
+    <string name="hint_email">Email</string>
+    <string name="hint_password">Password</string>
+    <string name="login">Login</string>
+    <string name="btn_forgot_password">Forgot your password?</string>
+    <string name="btn_link_to_register">Not a member? Get registered!</string>
+    <string name="empty_password">Password is empty. Enter password!</string>
+    <string name="empty_email">Email is empty. Enter email!</string>
+    <string name="minimum_password">Password too short, enter minimum 6 characters!</string>
+    <string name="auth_failed">Authentication failed. Check your email and password or sign up.</string>
+    <string name="login_succeed">Login succeeded!</string>
+    <string name="login_fail">Login failed. Please activate your account with the link sent to your email.</string>
+    <string name="login_duplicate">Login failed. The account is registered with Waitless app.</string>
+
+    <!-- Reset Password Page -->
+    <string name="forgot_password_lbl">Forgot password?</string>
+    <string name="forgot_password_msg">We just need your registered Email to sent you password reset instructions.</string>
+    <string name="reset_password">Reset Password</string>
+    <string name="btn_back"><![CDATA[<< Back]]></string>
+    <string name="enter_registered_email">Enter your registered email!</string>
+    <string name="send_reset_instruction">We have sent you instructions to reset your password!</string>
+    <string name="fail_reset">Failed to send reset email!</string>
+
+
+    <!-- Main Page -->
+    <string name="home">Home</string>
+    <string name="general_setting">General Settings</string>
+    <string name="tables">Tables</string>
+    <string name="open_hours">Open Hours</string>
+    <string name="menu">Menu</string>
+    <string name="guests">Guests</string>
+    <string name="sign_out">Sign Out</string>
+
+    <!-- Home Fragment -->
+    <string name="status_open">Open</string>
+    <string name="status_seated">Seated</string>
+    <string name="status_dirty">Dirty</string>
+    <string name="table_name">Table Name</string>
+    <string name="table_detail">Table Details</string>
+    <string name="table_size">Table Size</string>
+    <string name="change_to_open">Open Table</string>
+    <string name="change_to_seated">Assign Guests</string>
+    <string name="change_to_dirty">Clean Table</string>
+
+    <!-- Assign Waitlist Activity -->
+    <string name="assign_waitlist">Assign Waitlist</string>
+    <string name="current_guest">Current Waiting Guests</string>
+    <string name="subtitle">(Party size no larger than Table Size)</string>
+
+    <!-- General Fragment -->
+    <string name="restaurant_name">Restaurant Name</string>
+    <string name="address">Address</string>
+    <string name="phone">Phone</string>
+    <string name="cuisine">Cuisine</string>
+    <string name="logo">Logo</string>
+    <string name="btn_save">Save</string>
+
+    <!-- Open Hours Fragment -->
+    <string name="Sunday">Sunday</string>
+    <string name="Monday">Monday</string>
+    <string name="Tuesday">Tuesday</string>
+    <string name="Wednesday">Wednesday</string>
+    <string name="Thursday">Thursday</string>
+    <string name="Friday">Friday</string>
+    <string name="Saturday">Saturday</string>
+    <string name="default_start_hour">10:00 AM</string>
+    <string name="default_end_hour">10:00 PM</string>
+    <string name="hyphen">—</string>
+
+    <!-- Tables Fragment -->
+    <string name="set_num">Set the number for each type of tables</string>
+    <string name="tableA">Table A (size 1 – 2)</string>
+    <string name="tableB">Table B (size 3 – 4)</string>
+    <string name="tableC">Table C (size 5 – 6)</string>
+    <string name="tableD">Table D (size 7 – 10)</string>
+    <string name="empty_number">Number is empty. Enter a number!</string>
+    <string name="big_number_error">Number is too big. Enter a number that less than 20!</string>
+
+    <!-- Guest Fragment -->
+    <string name="waiting">Waiting</string>
+    <string name="dining">Dining</string>
+    <string name="cancelled">Cancelled</string>
+    <string name="completed">Completed</string>
+    <string name="no_guest">No Guest</string>
+    <string name="number_name">Number Name</string>
+    <string name="add_new_number">Add new number</string>
+    <string name="reset_counter">Reset Waitlist Counter</string>
+    <string name="clear_cancelled_list">Clear Cancelled List</string>
+    <string name="clear_completed_list">Clear Completed List</string>
+
+    <!-- Number Detailed Activity -->
+    <string name="number_detail">Number Details</string>
+    <string name="number">Number</string>
+    <string name="status">Status</string>
+    <string name="customer">Customer</string>
+    <string name="telephone">Telephone</string>
+    <string name="partySize">Party Size</string>
+    <string name="createdTime">Created Time</string>
+    <string name="change_to_waiting">Add back to Waitlist</string>
+    <string name="cancel">Cancel</string>
+    <string name="complete">Complete</string>
+    <string name="notify">Notify</string>
+    <string name="back">Back</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
+    <string name="cancel_message">Add the number to the CANCEL list?</string>
+    <string name="cancel_succeed">The number has been cancelled!</string>
+    <string name="wait_message">Add the number back to the Waiting list?</string>
+    <string name="wait_succeed">The number has been added back to the waiting list!</string>
+
+    <!-- Restaurant Get Number Activity -->
+    <string name="restaurant_get_number">Get A Number by Restaurant</string>
+    <string name="first_name">* First Name</string>
+    <string name="last_name">Last Name</string>
+    <string name="email">* Email</string>
+    <string name="party_size">* Party Size</string>
+    <string name="confirm">Confirm</string>
+    <string name="empty_first_name">First Name is empty. Enter first name!</string>
+    <string name="empty_party">Party size is empty. Enter party size!</string>
+    <string name="large_party">Party size is larger than 10. Please create multiple numbers separately!</string>
+    <string name="number_added">Number Added!</string>
+    <string name="close">Close</string>
+
 </resources>

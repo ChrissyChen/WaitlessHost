@@ -2,27 +2,52 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="project.csc895.sfsu.waitlesshost">
 
-    <!-- To auto-complete the email text field in the login form with the user's emails -->
-    <uses-permission android:name="android.permission.GET_ACCOUNTS" />
-    <uses-permission android:name="android.permission.READ_PROFILE" />
-    <uses-permission android:name="android.permission.READ_CONTACTS" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <!--<uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />-->
+    <!--<uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />-->
 
     <application
         android:allowBackup="true"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@drawable/logo"
         android:label="@string/app_name"
-        android:roundIcon="@mipmap/ic_launcher_round"
+        android:roundIcon="@drawable/logo"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme">
+        android:theme="@style/NoActionTheme">
         <activity
-            android:name=".LoginActivity"
-            android:label="@string/app_name">
+            android:name=".ui.SplashActivity"
+            android:label="@string/app_name"
+            android:theme="@style/SplashTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <activity
+            android:name=".ui.MainActivity"
+            android:label="@string/app_name" />
+        <activity
+            android:name=".ui.LoginActivity"
+            android:label="@string/login" />
+        <activity
+            android:name=".ui.SignupActivity"
+            android:label="@string/sign_up" />
+        <activity
+            android:name=".ui.ResetPasswordActivity"
+            android:label="@string/reset_password" />
+        <activity
+            android:name=".ui.NumberDetailedActivity"
+            android:label="@string/number_detail"
+            android:theme="@style/AppTheme"/>
+        <activity
+            android:name=".ui.RestaurantGetNumberActivity"
+            android:label="@string/restaurant_get_number"
+            android:theme="@style/AppTheme"/>
+        <activity
+            android:name=".ui.AssignWaitlistActivity"
+            android:label="@string/assign_waitlist"
+            android:theme="@style/AppTheme"/>
+
     </application>
 
 </manifest>

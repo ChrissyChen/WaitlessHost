@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/lightGrey"
+    android:padding="@dimen/activity_horizontal_margin"
+    android:layout_margin="@dimen/activity_horizontal_margin">
+
+
+    <TextView
+        android:id="@+id/congrats"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:text="@string/number_added"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        android:layout_margin="30dp"
+        android:layout_marginTop="100dp"/>
+
+    <android.support.v7.widget.GridLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:rowCount="6"
+        app:columnCount="2"
+        android:paddingTop="6dp"
+        android:paddingBottom="6dp"
+        app:useDefaultMargins="true">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_row="0"
+            app:layout_column="0"
+            android:text="@string/number"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/number"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_row="0"
+            app:layout_column="1" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_row="1"
+            app:layout_column="0"
+            android:text="@string/restaurant_name"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/restaurant"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_row="1"
+            app:layout_column="1" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_row="2"
+            app:layout_column="0"
+            android:text="@string/customer"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/customerName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_row="2"
+            app:layout_column="1" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_row="3"
+            app:layout_column="0"
+            android:text="@string/telephone"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/customerTelephone"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_row="3"
+            app:layout_column="1" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_row="4"
+            app:layout_column="0"
+            android:text="@string/partySize"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/customerPartySize"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_row="4"
+            app:layout_column="1" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_row="5"
+            app:layout_column="0"
+            android:text="@string/createdTime"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/numberCreatedTime"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_row="5"
+            app:layout_column="1" />
+
+    </android.support.v7.widget.GridLayout>
+
+
+    <Button
+        android:id="@+id/closeButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
+        android:layout_marginBottom="50dp"
+        android:layout_gravity="center"
+        android:textStyle="bold"
+        android:text="@string/close" />
+
+</LinearLayout>
